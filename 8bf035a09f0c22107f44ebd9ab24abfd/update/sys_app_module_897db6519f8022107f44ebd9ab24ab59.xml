@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_module">
+    <sys_app_module action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <application display_value="Hospital Requests">017db6519f8022107f44ebd9ab24ab55</application>
+        <assessment/>
+        <device_type/>
+        <filter/>
+        <hint/>
+        <homepage/>
+        <image/>
+        <link_type>LIST</link_type>
+        <map_page/>
+        <mobile_title>Hospital Requests</mobile_title>
+        <mobile_view_name>Mobile</mobile_view_name>
+        <name>x_1234_lifesync_hospital_requests</name>
+        <order/>
+        <override_menu_roles>false</override_menu_roles>
+        <query/>
+        <report/>
+        <require_confirmation>true</require_confirmation>
+        <roles>x_1234_lifesync.hospital_requests_user</roles>
+        <sys_class_name>sys_app_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-02 07:50:08</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>897db6519f8022107f44ebd9ab24ab59</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Hospital Requests</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_app_module_897db6519f8022107f44ebd9ab24ab59</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-02 07:50:08</sys_updated_on>
+        <timeline_page/>
+        <title>Hospital Requests</title>
+        <uncancelable>false</uncancelable>
+        <view_name/>
+        <window_name/>
+    </sys_app_module>
+</record_update>

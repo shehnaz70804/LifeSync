@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>GET</http_method>
+        <name>GetUsers</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    try {
+        var users = [];
+        var gr = new GlideRecordSecure('x_1234_lifesync_lifesync_register');
+        gr.query();
+        while (gr.next()) {
+            users.push({
+                sys_id: gr.getValue('sys_id'),
+                user_id: gr.getValue('user_id'),
+                name: gr.getValue('name')
+            });
+        }
+        response.setStatus(200);
+        return { success: true, users: users };
+    } catch (e) {
+        gs.error('HospitalUserAPI: Error fetching users - ' + e.message);
+        response.setStatus(500);
+        return { error: e.message };
+    }
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1234_lifesync/hospital_users/list</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/list</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-02 12:14:22</sys_created_on>
+        <sys_id>7cd9f7d99f8422107f44ebd9ab24abaa</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GetUsers</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ws_operation_7cd9f7d99f8422107f44ebd9ab24abaa</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-02 12:14:22</sys_updated_on>
+        <web_service_definition display_value="HospitalUserAPI">7fb9b7d99f8422107f44ebd9ab24abdd</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>7cd9f7d99f8422107f44ebd9ab24abaa</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-02 12:14:21</sys_created_on>
+        <sys_id>a3e9bbd99f8422107f44ebd9ab24ab27</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-02 12:14:21</sys_updated_on>
+        <table>sys_ws_operation</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

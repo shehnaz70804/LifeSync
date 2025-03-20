@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="890d7e119f8022107f44ebd9ab24ab74" label="Hospital Requests" max_length="40" name="x_1234_lifesync_hospital_requests" type="collection">
+        <element choice="1" default="Pending" label="Status" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Rejected" value="Rejected"/>
+                <element inactive_on_update="false" label="Pending" value="Pending"/>
+                <element inactive_on_update="false" label="Approved" value="Approved"/>
+            </choice>
+        </element>
+        <element label="Description" max_length="255" name="description" type="string"/>
+        <element label="Requested User" max_length="32" name="requested_user" reference="x_1234_lifesync_lifesync_register" type="reference"/>
+        <element label="Request Date" max_length="40" name="request_date" type="glide_date_time"/>
+        <index name="index">
+            <element name="requested_user"/>
+        </index>
+    </element>
+</database>

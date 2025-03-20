@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_definition">
+    <sys_ws_definition action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <base_uri>/api/x_1234_lifesync/lifesync_document_summarizer</base_uri>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_version>No active default version</default_version>
+        <doc_link/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <is_versioned>false</is_versioned>
+        <name>LifeSync Document Summarizer</name>
+        <namespace>x_1234_lifesync</namespace>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <service_id>lifesync_document_summarizer</service_id>
+        <short_description/>
+        <sys_class_name>sys_ws_definition</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-12 18:16:20</sys_created_on>
+        <sys_id>b09c68709f1422107f44ebd9ab24abfc</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>LifeSync Document Summarizer</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ws_definition_b09c68709f1422107f44ebd9ab24abfc</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-12 18:19:18</sys_updated_on>
+    </sys_ws_definition>
+</record_update>

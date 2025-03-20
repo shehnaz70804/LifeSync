@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script/>
+        <description/>
+        <direct>true</direct>
+        <endpoint>x_1234_lifesync_hospital_home.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide">
+
+    <!-- <j:set var="hospitalId" value="${gs.getParameter('hospital_id')}" />
+    <j:if test="${empty hospitalId}">
+        <j:set var="hospitalId" value="Unknown Hospital" />
+    </j:if> -->
+
+    <!-- <g:log level="info" message="Hospital ID: ${hospitalId}" /> -->
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #d8e1e5, #e8ecef);
+            margin: 0;
+            padding: 0;
+            color: #495057;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 20px auto;
+            padding: 0;
+        }
+        header {
+            background: linear-gradient(90deg, #2a6a6e, #4d9999);
+            color: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 500;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid #fff;
+            transition: transform 0.2s ease;
+        }
+        .profile:hover img {
+            transform: scale(1.1);
+        }
+        .profile span {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            min-width: 150px;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .dropdown a {
+            display: block;
+            padding: 10px 15px;
+            color: #495057;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .dropdown a:hover {
+            background-color: #b0d4d6;
+            color: #2a6a6e;
+        }
+        .section {
+            background-color: #e8ecef;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .section:hover {
+            background-color: #b0d4d6;
+        }
+        .section a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .section h2 {
+            color: #495057;
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            border-bottom: 2px solid #5d8294;
+            padding-bottom: 5px;
+            font-weight: 500;
+        }
+        .section p {
+            font-size: 16px;
+            color: #2a6a6e;
+            margin: 10px 0;
+        }
+        .section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+        }
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                margin: 10px auto;
+            }
+            header {
+                padding: 10px 15px;
+            }
+            .profile {
+                margin-top: 10px;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .dropdown {
+                top: 45px;
+                right: 0;
+            }
+        }
+    </style>
+
+    <header>
+        <div class="container">
+            <h1>LifeSync Hospital Portal</h1>
+            <div class="profile" onclick="toggleDropdown(event)">
+                <img src="https://via.placeholder.com/40" alt="Profile Picture" />
+                <span>${hospitalId}</span>
+                <div class="dropdown" id="profileDropdown">
+                    <a href="x_1234_lifesync_hospital_full_profile.do?hospital_id=${hospitalId}">Full Profile</a>
+                    <a href="x_1234_lifesync_hospital_edit_profile.do?hospital_id=${hospitalId}">Edit Profile</a>
+                    <a href="x_1234_lifesync_logout.do">Logout</a>
+                </div>
+            </div>
+        </div>
+		<script>
+			const hospitalId = new URLSearchParams(window.location.search).get("hospital_id");
+			console.log("Hospital ID:", hospitalId);
+
+			if (hospitalId) {
+				document.querySelectorAll("a").forEach(a => {
+					if (a.href.includes("?hospital_id=")) {
+						a.href += hospitalId;
+					}
+				});
+			}
+
+
+            function toggleDropdown(event) {
+                var dropdown = document.getElementById('profileDropdown');
+                dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+                event.stopPropagation();
+            }
+
+            document.addEventListener('click', function(event) {
+                var dropdown = document.getElementById('profileDropdown');
+                var profile = document.querySelector('.profile');
+                if (!profile.contains(event.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        </script>
+        
+    </header>
+
+    <div class="container">
+        <div class="section records">
+            <a href="x_1234_lifesync_hospital_records.do?hospital_id=${hospitalId}">
+                <h2>Records</h2>
+                <p>View and manage patient health records.</p>
+                <img src="https://via.placeholder.com/300x150?text=Hospital+Records" alt="Hospital Records Image" />
+            </a>
+        </div>
+        <div class="section requests">
+            <a href="x_1234_lifesync_hospital_requests.do?hospital_id=${hospitalId}">
+                <h2>Requests</h2>
+                <p>Review approved and pending patient requests.</p>
+                <img src="https://via.placeholder.com/300x150?text=Hospital+Requests" alt="Hospital Requests Image" />
+            </a>
+        </div>
+    </div>
+	<!-- <script>
+		const hospitalId = new URLSearchParams(window.location.search).get("hospital_id");
+			console.log("Hospital ID:", hospitalId);
+
+			if (hospitalId) {
+				document.querySelectorAll("a").forEach(a => {
+					if (a.href.includes("?hospital_id=")) {
+						a.href += hospitalId;
+					}
+				});
+			}
+	</script> -->
+</j:jelly>
+]]></html>
+        <name>hospital_home</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 10:58:50</sys_created_on>
+        <sys_id>a79e1e0d9f8422107f44ebd9ab24aba2</sys_id>
+        <sys_mod_count>24</sys_mod_count>
+        <sys_name>hospital_home</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ui_page_a79e1e0d9f8422107f44ebd9ab24aba2</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 14:01:25</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>a79e1e0d9f8422107f44ebd9ab24aba2</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 10:58:49</sys_created_on>
+        <sys_id>5b0f128d9f8422107f44ebd9ab24ab10</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-01 10:58:49</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="DELETE">
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name/>
+        <container_class_name/>
+        <name>lifesync_home - Container 4</name>
+        <order>4</order>
+        <semantic_tag/>
+        <sp_page display_value="lifesync_home">e7b155789f0422107f44ebd9ab24ab5b</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-12 05:41:43</sys_created_on>
+        <sys_id>e5ffb9ec9f1022107f44ebd9ab24ab5f</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>lifesync_home - Container 4</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sp_container_e5ffb9ec9f1022107f44ebd9ab24ab5f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-13 10:26:22</sys_updated_on>
+        <title/>
+        <width>container</width>
+    </sp_container>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</application>
+        <file_path/>
+        <instance_id>863b215cc3d31a10d7299dcd2b01313a</instance_id>
+        <instance_name>mav-jan-2515-0010</instance_name>
+        <name>sp_container_e5ffb9ec9f1022107f44ebd9ab24ab5f</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name/><name>lifesync_home - Container 4</name><order>4</order><semantic_tag/><sp_page display_value="lifesync_home">e7b155789f0422107f44ebd9ab24ab5b</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-12 05:41:43</sys_created_on><sys_id>e5ffb9ec9f1022107f44ebd9ab24ab5f</sys_id><sys_mod_count>2</sys_mod_count><sys_name>lifesync_home - Container 4</sys_name><sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package><sys_policy/><sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope><sys_update_name>sp_container_e5ffb9ec9f1022107f44ebd9ab24ab5f</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-13 10:26:22</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
+        <payload_hash>-1872314887</payload_hash>
+        <record_name>lifesync_home - Container 4</record_name>
+        <reverted_from/>
+        <source>07f075a09f0c22107f44ebd9ab24ab02</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-13 10:26:22</sys_created_on>
+        <sys_id>0dba48899f5422107f44ebd9ab24ab38</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1958f0a77230000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-13 10:26:22</sys_updated_on>
+        <type>Container</type>
+        <update_guid>c1ba48897f542210387d8decb94d1538</update_guid>
+        <update_guid_history>c1ba48897f542210387d8decb94d1538:-1872314887,1faa0889cd5422104e0b5737bb61b495:7196410,6dffb9ec3c102210d5a5a91a99c44360:1886707707</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="lifesync_home - Container 4">fcca44899f5422107f44ebd9ab24abc0</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-13 10:26:37</sys_created_on>
+        <sys_db_object display_value="" name="sp_container">sp_container</sys_db_object>
+        <sys_id>8da426c2c7144808bb71d8daf10098e4</sys_id>
+        <sys_metadata>e5ffb9ec9f1022107f44ebd9ab24ab5f</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>lifesync_home - Container 4</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_scope_delete display_value="">2ca23217b0054b7689152463f93a81b9</sys_scope_delete>
+        <sys_update_name>sp_container_e5ffb9ec9f1022107f44ebd9ab24ab5f</sys_update_name>
+        <sys_update_version display_value="sp_container_e5ffb9ec9f1022107f44ebd9ab24ab5f">0dba48899f5422107f44ebd9ab24ab38</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-13 10:26:37</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>multipart/form-data,application/pdf, application/json,application/xml,text/xml,text/html</consumes>
+        <consumes_customized>true</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>POST</http_method>
+        <name>UploadFile</name>
+        <operation_script><![CDATA[document.addEventListener('DOMContentLoaded', function() {
+    var token = document.getElementById('g_ck').value;
+    console.log('Session Token: ' + token);
+    if (!token) {
+        console.error('No session token found!');
+        document.getElementById('healthTip').innerText = "Error: No session token.";
+        return;
+    }
+
+    console.log('Fetching tip from /api/x_1234_lifesync/health_tip/tip');
+    fetch('/api/x_1234_lifesync/health_tip/tip', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-UserToken': token
+        }
+    })
+    .then(response => {
+        console.log('API Response Status: ' + response.status);
+        if (!response.ok) {
+            throw new Error('HTTP Error: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('API Response Data: ' + JSON.stringify(data));
+        if (data.result && data.result.success && data.result.tip) {
+            document.getElementById('healthTip').innerText = data.result.tip;
+        } else {
+            document.getElementById('healthTip').innerText = "Failed to load tip: " + (data.result && data.result.error ? data.result.error : 'No tip returned');
+        }
+    })
+    .catch(error => {
+        console.error('Fetch Error: ' + error.message);
+        document.getElementById('healthTip').innerText = "Error loading tip: " + error.message;
+    });
+});]]></operation_script>
+        <operation_uri>/api/x_1234_lifesync/documentuploadapi</operation_uri>
+        <produces>application/pdf, application/json,application/xml,text/xml</produces>
+        <produces_customized>true</produces_customized>
+        <relative_path>/</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-03 10:51:50</sys_created_on>
+        <sys_id>603070b19f4422107f44ebd9ab24abc7</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>UploadFile</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ws_operation_603070b19f4422107f44ebd9ab24abc7</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-09 09:49:32</sys_updated_on>
+        <web_service_definition display_value="DocumentUploadAPI">7e00fc719f4422107f44ebd9ab24abd3</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>603070b19f4422107f44ebd9ab24abc7</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-03 10:51:50</sys_created_on>
+        <sys_id>e8a0f8b19f4422107f44ebd9ab24abac</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-03 10:51:50</sys_updated_on>
+        <table>sys_ws_operation</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

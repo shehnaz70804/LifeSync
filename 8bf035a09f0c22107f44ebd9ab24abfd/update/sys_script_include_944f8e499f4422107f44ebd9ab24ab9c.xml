@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_1234_lifesync.HealthTipGenerator</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>HealthTipGenerator</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var HealthTipGenerator = Class.create();
+HealthTipGenerator.prototype = {
+    initialize: function() {},
+
+    getDailyHealthTip: function() {
+        try {
+            // Simulate NowAssist call (replace with actual NowAssist API when available)
+            var prompt = "Generate a concise daily health tip for a healthcare app user.";
+            var tip = this._callNowAssist(prompt);
+            return tip || "Stay active with a 10-minute walk daily!";
+        } catch (e) {
+            gs.error('HealthTipGenerator: Error generating tip - ' + e.message);
+            return "Drink water and stay hydrated!";
+        }
+    },
+
+    _callNowAssist: function(prompt) {
+        // Placeholder for NowAssist integration
+        // In a real implementation, use ServiceNow's NowAssist API (e.g., via GlideNowAssist or REST)
+        // For now, return a random tip from a list as a simulation
+        var tips = [
+            "Eat a balanced diet rich in fruits and vegetables.",
+            "Get at least 7-8 hours of sleep each night.",
+            "Take short breaks to stretch during long work hours.",
+            "Practice deep breathing to reduce stress."
+        ];
+        return tips[Math.floor(Math.random() * tips.length)];
+    },
+
+    type: 'HealthTipGenerator'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 11:19:12</sys_created_on>
+        <sys_id>944f8e499f4422107f44ebd9ab24ab9c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>HealthTipGenerator</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_script_include_944f8e499f4422107f44ebd9ab24ab9c</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-01 11:19:12</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>944f8e499f4422107f44ebd9ab24ab9c</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 11:19:11</sys_created_on>
+        <sys_id>adb3aec19fc422107f44ebd9ab24ab08</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-01 11:19:11</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

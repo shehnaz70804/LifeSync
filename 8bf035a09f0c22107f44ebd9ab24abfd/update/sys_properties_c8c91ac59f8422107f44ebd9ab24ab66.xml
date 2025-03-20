@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>OpenAI API key for LifeSync health tip generation</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_1234_lifesync.openai_api_key</name>
+        <read_roles/>
+        <suffix>openai_api_key</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 10:35:39</sys_created_on>
+        <sys_id>c8c91ac59f8422107f44ebd9ab24ab66</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_1234_lifesync.openai_api_key</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_properties_c8c91ac59f8422107f44ebd9ab24ab66</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-01 10:35:39</sys_updated_on>
+        <type>string</type>
+        <value>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</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=c8c91ac59f8422107f44ebd9ab24ab66"/>
+</record_update>

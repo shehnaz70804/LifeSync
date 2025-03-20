@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script/>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_1234_lifesync_my_records.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+    <g:evaluate var="currentUserId" jelly="true">
+        if (gs.getSession().isLoggedIn()) {
+            gs.getUserID();
+        } else {
+            'NotLoggedIn';
+        }
+    </g:evaluate>
+    <g:evaluate var="registeredUserId" jelly="true">
+        if (currentUserId != 'NotLoggedIn') {
+            var gr = new GlideRecord('x_1234_lifesync_lifesync_register');
+            gr.addQuery('sys_user', currentUserId); // Adjust this field name if different
+            gr.query();
+            if (gr.next()) {
+                gr.user_id; // Return custom user_id (e.g., "555")
+            } else {
+                'NoMatch';
+            }
+        } else {
+            'NotLoggedIn';
+        }
+    </g:evaluate>
+
+    <p>Debug Sys ID: ${currentUserId}</p>
+    <p>Debug Registered User ID: ${registeredUserId}</p>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #003087;
+            border-bottom: 2px solid #0078d4;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background-color: #0078d4;
+            color: white;
+        }
+        tr:hover {
+            background-color: #e6f0fa;
+        }
+        .no-records {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        a.back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #005ba1;
+            text-decoration: none;
+        }
+        a.back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <div class="container">
+        <h1>My Health Records</h1>
+        <j:if test="${currentUserId == 'NotLoggedIn'}">
+            <p>Please <a href="x_1234_lifesync_login.do">log in</a> to view your records.</p>
+        </j:if>
+        <j:else>
+            <g:query table="x_1234_lifesync_lifesync_records" query="userid=${registeredUserId}" var="records">
+                <j:set var="recordCount" value="0" />
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Document</th>
+                            <th>Document Type</th>
+                            <th>Hospital Name</th>
+                            <th>Record ID</th>
+                            <th>Summary</th>
+                            <th>User ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <j:while test="${records.next()}">
+                            <j:set var="recordCount" value="${recordCount + 1}" />
+                            <tr>
+                                <td>${records.document}</td>
+                                <td>${records.documenttype}</td>
+                                <td>${records.hospital_name}</td>
+                                <td>${records.recordid}</td>
+                                <td>${records.summary}</td>
+                                <td>${records.userid}</td>
+                            </tr>
+                        </j:while>
+                        <j:if test="${recordCount == 0}">
+                            <tr>
+                                <td colspan="6" class="no-records">No records found for this user.</td>
+                            </tr>
+                        </j:if>
+                    </tbody>
+                </table>
+            </g:query>
+        </j:else>
+        <a href="x_1234_lifesync_home.do" class="back-link">Back to Home</a>
+    </div>
+</j:jelly>]]></html>
+        <name>my_records</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-09 10:57:55</sys_created_on>
+        <sys_id>6b1b27eb9fc022107f44ebd9ab24abed</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>my_records</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ui_page_6b1b27eb9fc022107f44ebd9ab24abed</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-09 11:22:38</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>6b1b27eb9fc022107f44ebd9ab24abed</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-09 10:57:49</sys_created_on>
+        <sys_id>368b6b6f9fc022107f44ebd9ab24abba</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-09 10:57:49</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

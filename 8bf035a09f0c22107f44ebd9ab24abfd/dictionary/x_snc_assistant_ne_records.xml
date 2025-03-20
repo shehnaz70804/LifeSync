@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="df8b657b9f7712107f44ebd9ab24ab2e" label="Records" max_length="40" name="x_snc_assistant_ne_records" type="collection">
+        <element attributes="edge_encryption_enabled=true" label="Document Type" max_length="100" name="document_type" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Hospital Name" max_length="100" name="hospital_name" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Doc URL" max_length="1024" name="doc_url" type="url"/>
+    </element>
+</database>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_1234_lifesync.LifeSyncDocumentProcessor</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>true</mobile_callable>
+        <name>LifeSyncDocumentProcessor</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var LifeSyncDocumentProcessor = Class.create();
+LifeSyncDocumentProcessor.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+    processDocument: function() {
+        var fileName = this.getParameter('sysparm_file_name');
+        var userId = this.getParameter('sysparm_userid');
+        
+        var gr = new GlideRecord('x_1234_lifesync_lifesync_records');
+        gr.initialize();
+        gr.document = fileName;
+        gr.userid = userId;
+        gr.documenttype = 'report';
+        gr.hospital_name = 'Apollo';
+        gr.recordid = '100' + Math.floor(Math.random() * 1000);
+        gr.summary = 'Summary for ' + fileName + ': Uploaded and processed.';
+        var sysId = gr.insert();
+        
+        return 'Document uploaded successfully: ' + fileName + ' (Sys ID: ' + sysId + ')';
+    },
+    type: 'LifeSyncDocumentProcessor'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-10 11:24:44</sys_created_on>
+        <sys_id>9b4afc089f9422107f44ebd9ab24ab6e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>LifeSyncDocumentProcessor</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_script_include_9b4afc089f9422107f44ebd9ab24ab6e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-10 11:24:44</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>9b4afc089f9422107f44ebd9ab24ab6e</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-10 11:24:44</sys_created_on>
+        <sys_id>2a4bb8889f9422107f44ebd9ab24ab3c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-10 11:24:44</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

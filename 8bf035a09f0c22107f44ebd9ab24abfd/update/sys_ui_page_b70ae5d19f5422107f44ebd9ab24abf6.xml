@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script/>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_1234_lifesync_hospital_edit_profile.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #d8e1e5, #e8ecef);
+            margin: 0;
+            padding: 20px;
+            color: #495057;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #e8ecef;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid #5d8294;
+        }
+        h1 {
+            color: #2a6a6e;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 500;
+        }
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: #495057;
+        }
+        input[type="text"], input[type="tel"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+        input[readonly] {
+            background-color: #f1f3f5;
+            cursor: not-allowed;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        input[type="submit"] {
+            background: linear-gradient(45deg, #2a6a6e, #4d9999);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background: linear-gradient(45deg, #245c5f, #438989);
+        }
+        .error {
+            color: #d83b01;
+            text-align: center;
+            margin: 10px 0;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            input[type="text"], input[type="tel"], textarea, select {
+                font-size: 13px;
+            }
+        }
+    </style>
+
+    <g:evaluate var="hospital" object="true">
+        var hospitalId = gs.getParameter('hospital_id');
+        gs.log('Edit Profile - Hospital ID: ' + hospitalId, 'LifeSyncDebug');
+        if (!hospitalId || hospitalId.trim() === '') {
+            hospitalId = 'Unknown Hospital';
+            gs.log('Edit Profile - No valid hospital_id, using fallback: ' + hospitalId, 'LifeSyncDebug');
+        }
+        var gr = new GlideRecord('x_1234_lifesync_hospitals');
+        gr.addQuery('hospital_id', hospitalId);
+        gr.query();
+        if (gr.next()) {
+            gr;
+        } else {
+            null;
+        }
+    </g:evaluate>
+
+    <div class="container">
+        <h1>Edit Hospital Profile</h1>
+        <j:if test="${hospital != null}">
+            <form id="editProfileForm" onsubmit="submitEditProfile(); return false;">
+                <label>Hospital Name</label>
+                <input type="text" id="hospital_name" name="hospital_name" value="${hospital.hospital_name}" required="true"/>
+                <label>Hospital ID</label>
+                <input type="text" id="hospital_id" name="hospital_id" value="${hospital.hospital_id}" readonly="true"/>
+                <label>Hospital Type</label>
+                <select id="hospital_type" name="hospital_type" required="true">
+                    <j:if test="${hospital.hospital_type == 'Public'}">
+                        <option value="Public" selected="selected">Public</option>
+                    </j:if>
+                    <j:if test="${hospital.hospital_type != 'Public'}">
+                        <option value="Public">Public</option>
+                    </j:if>
+                    <j:if test="${hospital.hospital_type == 'Private'}">
+                        <option value="Private" selected="selected">Private</option>
+                    </j:if>
+                    <j:if test="${hospital.hospital_type != 'Private'}">
+                        <option value="Private">Private</option>
+                    </j:if>
+                    <j:if test="${hospital.hospital_type == 'Specialty'}">
+                        <option value="Specialty" selected="selected">Specialty</option>
+                    </j:if>
+                    <j:if test="${hospital.hospital_type != 'Specialty'}">
+                        <option value="Specialty">Specialty</option>
+                    </j:if>
+                </select>
+                <label>Registration Number</label>
+                <input type="text" id="registration_number" name="registration_number" value="${hospital.registration_number}" required="true"/>
+                <label>Address</label>
+                <textarea id="address" name="address" required="true">${hospital.address}</textarea>
+                <label>Pincode</label>
+                <input type="text" id="pincode" name="pincode" value="${hospital.pincode}" required="true" pattern="[0-9]{6}" placeholder="6-digit pincode"/>
+                <label>Contact Information</label>
+                <input type="tel" id="contact_information" name="contact_information" value="${hospital.contact_information}" required="true" pattern="[0-9]{10}" placeholder="10-digit phone"/>
+                <input type="submit" value="Save Changes"/>
+            </form>
+        </j:if>
+        <j:if test="${hospital == null}">
+            <p class="error">Hospital not found for ID: ${gs.getParameter('hospital_id')}.</p>
+            <a href="x_1234_lifesync_hospital_home.do" class="back-link" style="display: block; text-align: center;">Back to Home</a>
+        </j:if>
+    </div>
+
+    <script>
+        function submitEditProfile() {
+            var data = {
+                hospital_id: document.getElementById('hospital_id').value,
+                hospital_name: document.getElementById('hospital_name').value.trim(),
+                hospital_type: document.getElementById('hospital_type').value,
+                registration_number: document.getElementById('registration_number').value.trim(),
+                address: document.getElementById('address').value.trim(),
+                pincode: document.getElementById('pincode').value.trim(),
+                contact_information: document.getElementById('contact_information').value.trim()
+            };
+
+            if (!data.hospital_name || !data.registration_number || !data.address || !data.pincode || !data.contact_information) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            if (!/^\d{6}$/.test(data.pincode)) {
+                alert('Pincode must be a 6-digit number.');
+                return;
+            }
+            if (!/^\d{10}$/.test(data.contact_information)) {
+                alert('Contact Information must be a 10-digit phone number.');
+                return;
+            }
+
+            var ga = new GlideAjax('x_1234_lifesync.HospitalProfileProcessor');
+            ga.addParam('sysparm_name', 'updateHospitalProfile');
+            ga.addParam('sysparm_data', JSON.stringify(data));
+            ga.getXML(function(response) {
+                if (response) {
+                    var answer = response.responseXML.documentElement.getAttribute('answer');
+                    if (answer === 'success') {
+                        alert('Profile updated successfully!');
+                        window.location.href = 'x_1234_lifesync_hospital_home.do?hospital_id=' + data.hospital_id;
+                    } else {
+                        alert('Failed to update profile: ' + answer);
+                    }
+                } else {
+                    alert('No response from server');
+                }
+            });
+        }
+    </script>
+</j:jelly>]]></html>
+        <name>hospital_edit_profile</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-14 12:07:13</sys_created_on>
+        <sys_id>b70ae5d19f5422107f44ebd9ab24abf6</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>hospital_edit_profile</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ui_page_b70ae5d19f5422107f44ebd9ab24abf6</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 12:27:27</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>b70ae5d19f5422107f44ebd9ab24abf6</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-14 12:02:17</sys_created_on>
+        <sys_id>773ae5d19f5422107f44ebd9ab24ab0c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 12:02:17</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

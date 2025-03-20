@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $http) {
+  var c = this;
+  c.widgetReady = false;
+
+  function initializeWidget() {
+    if (typeof window.cloudinary === 'undefined') {
+      console.log('Cloudinary not loaded yet, retrying in 500ms');
+      setTimeout(initializeWidget, 500);
+    } else {
+      c.uploadWidget = window.cloudinary.createUploadWidget({
+        cloudName: 'deyzkecbx',
+        uploadPreset: 'servicenow_upload',
+        multiple: false,
+        resourceType: 'auto'
+      }, function(error, result) {
+        if (!error && result && result.event === "success") {
+          console.log('Upload successful:', result.info);
+          var fileUrl = result.info.secure_url;
+          var fileName = result.info.original_filename + (result.info.format ? '.' + result.info.format : '.txt');
+          c.saveToServiceNow(fileName, fileUrl);
+        } else if (error) {
+          console.error('Upload error:', error);
+          alert('Upload failed: ' + error.message);
+        }
+      });
+      c.widgetReady = true;
+      console.log('Cloudinary widget initialized');
+      // Enable button explicitly after initialization
+      $scope.$apply(function() {
+        c.widgetReady = true;
+      });
+    }
+  }
+
+  initializeWidget();
+
+  $scope.openWidget = function() {
+    console.log('Button clicked, opening widget');
+    if (c.widgetReady && c.uploadWidget) {
+      c.uploadWidget.open();
+    } else {
+      console.error('Upload widget not ready yet');
+      alert('Please wait, the upload tool is still loading...');
+    }
+  };
+
+  c.saveToServiceNow = function(fileName, url) {
+    console.log('Saving to ServiceNow:', fileName, url);
+    var data = {
+      file_name: fileName,
+      cloudinary_url: url
+    };
+    $http.post('/api/now/table/x_1234_lifesync_u_document_storage', data).then(function(response) {
+      console.log('File URL saved:', response.data.result);
+      alert('File uploaded and URL stored successfully!');
+      $scope.$emit('fileUploaded'); // Trigger records refresh
+    }, function(error) {
+      console.error('Error saving URL:', JSON.stringify(error.data, null, 2));
+      alert('Error saving file: ' + error.statusText);
+    });
+  };
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>upload_to_cloudinary</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>Upload to Cloudinary</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  // No server-side logic needed for this example
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-10 17:43:57</sys_created_on>
+        <sys_id>25129e089f5022107f44ebd9ab24ab7d</sys_id>
+        <sys_mod_count>18</sys_mod_count>
+        <sys_name>Upload to Cloudinary</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sp_widget_25129e089f5022107f44ebd9ab24ab7d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 13:34:11</sys_updated_on>
+        <template><![CDATA[<div>
+  <button id="upload_button" class="btn btn-primary" ng-click="openWidget()">Upload File</button>
+</div>
+<script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+
+<style>
+  /* Twilight Professional Theme for Upload Button */
+  .btn.btn-primary {
+    background: linear-gradient(45deg, #2a6a6e, #4d9999); /* Deep teal gradient */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    font-weight: 500;
+    text-align: center;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+  }
+
+  .btn.btn-primary:hover {
+    background: linear-gradient(45deg, #245c5f, #438989); /* Darker teal on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+  }
+
+  .btn.btn-primary:active {
+    transform: scale(0.98); /* Slight press effect */
+  }
+
+  /* Ensure button fits within a themed container */
+  div {
+    margin: 10px 0; /* Spacing consistent with theme */
+  }
+</style>]]></template>
+    </sp_widget>
+</record_update>

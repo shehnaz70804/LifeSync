@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[function uploadFile() {
+    var fileInput = document.getElementById('fileUpload');
+    var file = fileInput.files[0];
+    
+    if (!file) {
+        alert('Please select a PDF file to upload.');
+        return;
+    }
+
+    if (file.type !== 'application/pdf') {
+        alert('Only PDF files are allowed.');
+        return;
+    }
+
+    // Get session token
+    var token = window.g_ck || document.getElementById('g_ck') ? document.getElementById('g_ck').value : null;
+    if (!token) {
+        console.error('Session token not found!');
+        alert('Error: Session token not available.');
+        return;
+    }
+
+    // Assume Userid is the logged-in user's sys_id or a selected patient
+    // Adjust this based on your logic (e.g., from a patient selection UI if present)
+    var userId = g_user.userID; // Current logged-in user's sys_id (adjust if needed)
+
+    var formData = new FormData();
+    formData.append('file', file);
+    formData.append('name', file.name); // File name for reference
+
+    alert('Uploading file: ' + file.name);
+    console.log('Uploading file at: ' + new Date().toISOString());
+    console.log('Userid: ' + userId);
+
+    fetch('/api/x_1234_lifesync/upload_file?user_id=' + encodeURIComponent(userId), {
+        method: 'POST',
+        headers: {
+            'X-UserToken': token
+        },
+        body: formData
+    })
+    .then(response => {
+        console.log('Upload API Status: ' + response.status);
+        if (!response.ok) {
+            throw new Error('HTTP Error: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Upload API Response: ' + JSON.stringify(data));
+        if (data.result && data.result.success) {
+            alert('File uploaded successfully! Record ID: ' + data.result.recordId);
+            window.location.reload(); // Refresh to show new record
+        } else {
+            alert('Upload failed: ' + (data.result ? data.result.error : 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Upload error: ' + error.message);
+        alert('Error uploading file: ' + error.message);
+    });
+}]]></client_script>
+        <description/>
+        <direct>true</direct>
+        <endpoint>x_1234_lifesync_hospital_records.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+    <input type="hidden" id="g_ck" value="$[gs.getSession().getSessionToken()]"/>
+    <style>
+        /* Twilight Professional Theme */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #d8e1e5, #e8ecef); /* Soft gradient background */
+            margin: 0;
+            padding: 20px;
+            color: #495057; /* Charcoal gray text */
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(45deg, #2a6a6e, #4d9999); /* Deep teal gradient */
+            color: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+            border-radius: 6px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 500;
+        }
+
+        /* Navigation and Tools */
+        .tools {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background-color: #e8ecef; /* Soft gray */
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .tools input[type="text"] {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ced4da; /* Light gray border */
+            border-radius: 4px;
+            flex-grow: 1;
+            background-color: #fff;
+            box-shadow: none;
+        }
+
+        .tools select {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background-color: #fff;
+            box-shadow: none;
+        }
+
+        .tools .bookmarks {
+            font-size: 14px;
+            color: #2a6a6e; /* Deep teal */
+            font-weight: 500;
+        }
+
+        /* Records List */
+        .records-list {
+            background-color: #e8ecef; /* Soft gray */
+            border-radius: 6px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+        }
+
+        .record-row {
+            padding: 15px;
+            border-bottom: 1px solid #ced4da; /* Light gray border */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .record-row:hover {
+            background-color: #d8e1e5; /* Lighter gray on hover */
+        }
+
+        .record-row:last-child {
+            border-bottom: none;
+        }
+
+        .record-row a {
+            text-decoration: none;
+            color: #495057; /* Charcoal gray */
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .record-row span {
+            font-size: 16px;
+        }
+
+        .record-date {
+            color: #2a6a6e; /* Deep teal */
+            font-weight: 600;
+        }
+
+        /* Upload Button */
+        .upload-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .upload-btn {
+            background: linear-gradient(45deg, #2a6a6e, #4d9999); /* Deep teal gradient */
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .upload-btn:hover {
+            background: linear-gradient(45deg, #245c5f, #438989); /* Darker teal */
+            transform: scale(1.05); /* Slight zoom */
+        }
+
+        .upload-btn:active {
+            transform: scale(0.98); /* Slight press */
+        }
+
+        input[type="file"] {
+            display: none; /* Hidden but triggered by button */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .tools {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .record-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            .records-list {
+                padding: 15px;
+            }
+
+            .record-row span {
+                font-size: 14px;
+            }
+
+            .upload-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+
+    <header>
+        <div class="container">
+            <h1>LifeSync Records</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Search, Filter, and Bookmarks Tools -->
+        <div class="tools">
+            <input type="text" placeholder="Search records..." />
+            <select>
+                <option value="">Filter by Type</option>
+                <option value="hospital_name">Hospital Name</option>
+                <option value="summary">Summary</option>
+                <option value="document_type">Document Type</option>
+            </select>
+            <span class="bookmarks">Bookmarks (Coming Soon)</span>
+        </div>
+
+        <!-- Records List -->
+        <div class="records-list">
+            <j:forEach var="record" items="${glideRecord('x_1234_lifesync_lifesync_register').orderByDesc('sys_created_on').query()}">
+                <div class="record-row">
+                    <a href="x_1234_lifesync_lifesync_record_detail.do?sys_id=${record.getValue('sys_id')}">
+                        <span class="record-date">${record.getValue('sys_created_on')}</span>
+                        <span>${record.getValue('name')} ${record.getValue('phone_number') ? '- ' + record.getValue('phone_number') : ''}</span>
+                    </a>
+                </div>
+            </j:forEach>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <input type="file" id="fileUpload" accept=".pdf" onchange="uploadFile();" />
+            <button class="upload-btn" onclick="document.getElementById('fileUpload').click();">Upload</button>
+        </div>
+    </div>
+
+    <g:evaluate var="glideRecord" object="true">
+        var gr = new GlideRecord('x_1234_lifesync_lifesync_register');
+        gr;
+    </g:evaluate>
+
+    <script>
+        function uploadFile() {
+            var fileInput = document.getElementById('fileUpload');
+            if (fileInput.files &amp;&amp; fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                alert('Uploading ' + file.name + '... (Functionality to be implemented)');
+                // Add your upload logic here (e.g., AJAX to Cloudinary)
+            }
+        }
+    </script>
+</j:jelly>]]></html>
+        <name>hospital_records</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 11:01:17</sys_created_on>
+        <sys_id>2a7f168d9f8422107f44ebd9ab24abae</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>hospital_records</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ui_page_2a7f168d9f8422107f44ebd9ab24abae</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 13:47:08</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>2a7f168d9f8422107f44ebd9ab24abae</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 11:01:17</sys_created_on>
+        <sys_id>5b9f5e8d9f8422107f44ebd9ab24abdb</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-01 11:01:17</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

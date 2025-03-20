@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="5e84d2c89f5022107f44ebd9ab24ab5a" label="u_document_storage" max_length="40" name="x_1234_lifesync_u_document_storage" type="collection">
+        <element label="File Name" max_length="100" name="file_name" type="string"/>
+        <element label="Summary" max_length="4000" name="summary" type="string"/>
+        <element label="Cloudinary URL" max_length="255" name="cloudinary_url" type="url"/>
+    </element>
+</database>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_1234_lifesync.LifeSyncRecords</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>LifeSyncRecords</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var LifeSyncRecords = Class.create();
+LifeSyncRecords.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+    getUserRecords: function() {
+        var userId = this.getParameter('sysparm_user_id') || gs.getUserID();
+        return JSON.stringify({
+            success: true,
+            records: [{ document: "Test Doc", documenttype: "PDF", hospital_name: "Test Hospital", recordid: "123", summary: "Test Summary", userid: userId }],
+            debug: { sys_id: userId, registered_user_id: "TestID" }
+        });
+    },
+    type: 'LifeSyncRecords'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-09 11:59:31</sys_created_on>
+        <sys_id>7689bbaf9f0422107f44ebd9ab24ab8f</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>LifeSyncRecords</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_script_include_7689bbaf9f0422107f44ebd9ab24ab8f</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-09 17:17:18</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>7689bbaf9f0422107f44ebd9ab24ab8f</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-09 11:59:31</sys_created_on>
+        <sys_id>56a93faf9f0422107f44ebd9ab24ab91</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-09 11:59:31</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script/>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_1234_lifesync_full_profile.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #0078d4;
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            display: inline-block;
+        }
+
+        .profile-section {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .profile-section h2 {
+            color: #003087;
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 2px solid #0078d4;
+            padding-bottom: 5px;
+        }
+
+        .profile-details p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .profile-details p strong {
+            display: inline-block;
+            width: 150px;
+            color: #005ba1;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0078d4;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .back-btn:hover {
+            background-color: #005ba1;
+        }
+    </style>
+
+    <g:evaluate var="userDetails" object="true">
+        var gr = new GlideRecord('x_1234_lifesync_lifesync_register');
+        gr.addQuery('sys_id', gs.getUserID());
+        gr.query();
+        if (gr.next()) {
+            gr;
+        } else {
+            null;
+        }
+    </g:evaluate>
+
+    <header>
+        <div class="container">
+            <h1>LifeSync</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="profile-section">
+            <h2>Full Profile</h2>
+            <j:if test="${userDetails != null}">
+                <div class="profile-details">
+                    <p><strong>Name:</strong> ${userDetails.getValue('name')}</p>
+                    <p><strong>Email:</strong> ${userDetails.getValue('email') || 'Not provided'}</p>
+                    <p><strong>Phone:</strong> ${userDetails.getValue('phone_number') || 'Not provided'}</p>
+                </div>
+            </j:if>
+            <j:if test="${userDetails == null}">
+                <p>Error: User profile not found.</p>
+            </j:if>
+            <a href="x_1234_lifesync_home.do" class="back-btn">Back to Home</a>
+        </div>
+    </div>
+</j:jelly>]]></html>
+        <name>full_profile</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-09 08:02:10</sys_created_on>
+        <sys_id>bb1343e79f0022107f44ebd9ab24ab64</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>full_profile</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ui_page_bb1343e79f0022107f44ebd9ab24ab64</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-09 08:03:25</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>bb1343e79f0022107f44ebd9ab24ab64</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-09 08:02:09</sys_created_on>
+        <sys_id>e55383ab9f0022107f44ebd9ab24ab47</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-09 08:02:09</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

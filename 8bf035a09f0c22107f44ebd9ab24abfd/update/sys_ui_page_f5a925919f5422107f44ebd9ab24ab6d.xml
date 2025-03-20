@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script/>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_1234_lifesync_hospital_full_profile.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #d8e1e5, #e8ecef);
+            margin: 0;
+            padding: 20px;
+            color: #495057;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #e8ecef;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid #5d8294;
+        }
+        h1 {
+            color: #2a6a6e;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 500;
+        }
+        .profile-field {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+        }
+        .profile-field label {
+            font-weight: 500;
+            color: #495057;
+            display: inline-block;
+            width: 200px;
+            font-size: 16px;
+        }
+        .profile-field span {
+            color: #2a6a6e;
+            font-size: 16px;
+            flex: 1;
+            word-wrap: break-word;
+        }
+        .debug {
+            color: #d83b01;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .error {
+            color: #d83b01;
+            text-align: center;
+            font-size: 16px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #2a6a6e, #4d9999);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+        .back-link:hover {
+            background: linear-gradient(45deg, #245c5f, #438989);
+        }
+    </style>
+
+    <div class="container">
+        <h1>Hospital Full Profile</h1>
+        <p class="debug">Debug - URL Hospital ID: <span id="hospitalIdDisplay">Loading...</span></p>
+        <div id="profileContent"></div>
+        <a id="backLink" href="x_1234_lifesync_hospital_home.do" class="back-link">Back to Home</a>
+    </div>
+
+    <script>
+        // Get hospital_id from URL immediately
+        const hospitalId = new URLSearchParams(window.location.search).get("hospital_id") || "Unknown Hospital";
+        console.log("Hospital ID from URL:", hospitalId);
+
+        // Set initial display and back link
+        document.getElementById("hospitalIdDisplay").innerText = hospitalId;
+        document.getElementById("backLink").href = "x_1234_lifesync_hospital_home.do?hospital_id=" + encodeURIComponent(hospitalId);
+
+        function fetchHospitalData() {
+            console.log("Starting fetchHospitalData for hospital_id:", hospitalId);
+            var profileContent = document.getElementById("profileContent");
+            profileContent.innerHTML = '<p>Loading hospital data...</p>';
+
+            var ga = new GlideAjax('HospitalProfileAjax');
+            ga.addParam('sysparm_name', 'getHospital');
+            ga.addParam('sysparm_hospital_id', hospitalId);
+            console.log("GlideAjax request initiated");
+
+            ga.getXML(function(response) {
+                console.log("GlideAjax success callback triggered");
+                console.log("Raw response:", response);
+
+                var answer;
+                if (response) {
+					if(response.responseXML){
+                    answer = response.responseXML.documentElement.getAttribute("answer");
+					}
+                } else {
+                    answer = null;
+                }
+                console.log("Parsed answer:", answer);
+
+                if (answer) {
+                    try {
+                        var data = JSON.parse(answer);
+                        console.log("Parsed data:", data);
+                        if (data.error) {
+                            profileContent.innerHTML = '<p class="error">' + data.error + '</p>';
+                        } else {
+                            profileContent.innerHTML = `
+                                <div class="profile-field">
+                                    <label>Hospital Name:</label>
+                                    <span>${data.hospital_name || 'N/A'}</span>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Hospital ID:</label>
+                                    <span>${data.hospital_id || 'N/A'}</span>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Hospital Type:</label>
+                                    <span>${data.hospital_type || 'N/A'}</span>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Registration Number:</label>
+                                    <span>${data.registration_number || 'N/A'}</span>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Address:</label>
+                                    <span>${data.address || 'N/A'}</span>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Pincode:</label>
+                                    <span>${data.pincode || 'N/A'}</span>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Contact Information:</label>
+                                    <span>${data.contact_information || 'N/A'}</span>
+                                </div>
+                            `;
+                        }
+                    } catch (e) {
+                        console.error("JSON parse error:", e);
+                        profileContent.innerHTML = '<p class="error">Error parsing response: ' + e.message + '</p>';
+                    }
+                } else {
+                    console.error("No valid response from server");
+                    profileContent.innerHTML = '<p class="error">Failed to load hospital data - No server response</p>';
+                }
+            }, function(error) {
+                console.error("GlideAjax error callback triggered:", error);
+                profileContent.innerHTML = '<p class="error">AJAX error: ' + error + '</p>';
+            });
+
+            // Timeout fallback
+            setTimeout(function() {
+                if (profileContent.innerHTML === '<p>Loading hospital data...</p>') {
+                    console.error("GlideAjax timeout after 10 seconds");
+                    profileContent.innerHTML = '<p class="error">Request timed out - Server not responding</p>';
+                }
+            }, 10000); // 10 seconds
+        }
+
+        // Run immediately to avoid DOM timing issues
+        console.log("Script loaded, calling fetchHospitalData");
+        fetchHospitalData();
+    </script>
+</j:jelly>]]></html>
+        <name>hospital_full_profile</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-14 12:00:45</sys_created_on>
+        <sys_id>f5a925919f5422107f44ebd9ab24ab6d</sys_id>
+        <sys_mod_count>14</sys_mod_count>
+        <sys_name>hospital_full_profile</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ui_page_f5a925919f5422107f44ebd9ab24ab6d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 13:50:38</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>f5a925919f5422107f44ebd9ab24ab6d</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-14 12:00:44</sys_created_on>
+        <sys_id>4de965919f5422107f44ebd9ab24ab3e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 12:00:44</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

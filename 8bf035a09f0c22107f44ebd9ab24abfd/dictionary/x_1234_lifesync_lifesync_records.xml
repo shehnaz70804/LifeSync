@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="9b0458519fc022107f44ebd9ab24abf6" label="LifeSync_records" max_length="40" name="x_1234_lifesync_lifesync_records" type="collection">
+        <element label="DocumentType" max_length="40" name="documenttype" type="string"/>
+        <element label="Recordid" max_length="40" name="recordid" type="integer"/>
+        <element display="true" label="Userid" max_length="40" name="userid" type="string"/>
+        <element label="Summary" max_length="4000" name="summary" type="string"/>
+        <element label="Document" max_length="40" name="document" type="string"/>
+        <element label="Hospital Name" max_length="40" name="hospital_name" type="string"/>
+        <index name="index">
+            <element name="userid"/>
+        </index>
+    </element>
+</database>

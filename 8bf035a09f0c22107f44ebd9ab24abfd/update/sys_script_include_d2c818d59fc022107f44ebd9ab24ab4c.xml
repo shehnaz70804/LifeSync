@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_1234_lifesync.GeminiDocumentProcessor</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>GeminiDocumentProcessor</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var GeminiDocumentProcessor = Class.create();
+GeminiDocumentProcessor.prototype = {
+    initialize: function() {
+        this.apiKey = gs.getProperty('x_1234_lifesync.gemini_api_key');
+        this.endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
+    },
+
+    processDocument: function(documentContent) {
+        try {
+            // Extract text from PDF content (assuming documentContent is raw PDF data)
+            var pdfText = this.extractTextFromPDF(documentContent);
+
+            // If no text extracted, use raw content as fallback (up to 4000 chars)
+            if (!pdfText || pdfText.trim() === '') {
+                pdfText = documentContent.substring(0, 4000);
+            }
+
+            // Prompt Gemini to analyze the text and return JSON-structured data
+            var prompt = "Analyze this medical document text and return a JSON object with: " +
+                         "1. 'hospital_name' (string, hospital name if mentioned, else 'Unknown'), " +
+                         "2. 'summary' (string, concise summary max 100 words), " +
+                         "3. 'document_type' (string, from: Lab Report, Discharge Summary, Prescription, Other).\n\n" +
+                         "Text: " + pdfText;
+
+            var response = this._callGemini(prompt);
+            var jsonResponse = this.parseGeminiJsonResponse(response);
+
+            return {
+                hospital_name: jsonResponse.hospital_name || 'Unknown',
+                summary: jsonResponse.summary || 'No summary generated',
+                document_type: jsonResponse.document_type || 'Other'
+            };
+        } catch (e) {
+            gs.error('GeminiDocumentProcessor: Error processing document - ' + e.message);
+            return {
+                hospital_name: 'Unknown',
+                summary: 'Error processing document: ' + e.message,
+                document_type: 'Other'
+            };
+        }
+    },
+
+    extractTextFromPDF: function(pdfContent) {
+        try {
+            // Use a PDF parsing library (ServiceNow doesn’t natively parse PDFs, so we simulate with a basic approach)
+            // This is a placeholder—see notes below for real implementation
+            var pdfParser = Packages.com.lowagie.text.pdf.PdfReader; // Example, might not be available in ServiceNow
+            var reader = new pdfParser(new java.io.ByteArrayInputStream(pdfContent.getBytes()));
+            var text = '';
+            for (var i = 1; i <= reader.getNumberOfPages(); i++) {
+                text += Packages.com.lowagie.text.pdf.parser.PdfTextExtractor.getTextFromPage(reader, i);
+            }
+            reader.close();
+            return text.trim();
+        } catch (e) {
+            gs.error('GeminiDocumentProcessor: Error extracting PDF text - ' + e.message);
+            return ''; // Return empty if parsing fails
+        }
+    },
+
+    parseGeminiJsonResponse: function(responseText) {
+        try {
+            // Remove any markdown, formatting, or extra text, assuming Gemini returns JSON-like output
+            var jsonStart = responseText.indexOf('{');
+            var jsonEnd = responseText.lastIndexOf('}') + 1;
+            if (jsonStart === -1 || jsonEnd === -1) {
+                throw new Error('Invalid JSON response from Gemini');
+            }
+            var jsonStr = responseText.substring(jsonStart, jsonEnd);
+            return JSON.parse(jsonStr);
+        } catch (e) {
+            gs.error('GeminiDocumentProcessor: Error parsing JSON - ' + e.message);
+            return {
+                hospital_name: 'Unknown',
+                summary: 'No summary generated',
+                document_type: 'Other'
+            };
+        }
+    },
+
+    _callGemini: function(prompt) {
+        var rest = new sn_ws.RESTMessageV2();
+        rest.setEndpoint(this.endpoint + '?key=' + this.apiKey);
+        rest.setHttpMethod('POST');
+        rest.setRequestHeader('Content-Type', 'application/json');
+
+        var requestBody = {
+            "contents": [{
+                "parts": [{
+                    "text": prompt
+                }]
+            }],
+            "generationConfig": {
+                "maxOutputTokens": 200, // Increased for JSON + text
+                "temperature": 0.7
+            }
+        };
+        rest.setRequestBody(JSON.stringify(requestBody));
+
+        var response = rest.execute();
+        var responseBody = response.getBody();
+        var jsonResponse = JSON.parse(responseBody);
+
+        if (jsonResponse && jsonResponse.candidates && jsonResponse.candidates.length > 0) {
+            return jsonResponse.candidates[0].content.parts[0].text.trim();
+        } else {
+            throw new Error('Invalid response from Gemini API');
+        }
+    },
+
+    type: 'GeminiDocumentProcessor'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 19:51:23</sys_created_on>
+        <sys_id>d2c818d59fc022107f44ebd9ab24ab4c</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>GeminiDocumentProcessor</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_script_include_d2c818d59fc022107f44ebd9ab24ab4c</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-03 07:42:55</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>d2c818d59fc022107f44ebd9ab24ab4c</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 19:51:23</sys_created_on>
+        <sys_id>d0f894d59fc022107f44ebd9ab24ab7d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-01 19:51:23</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

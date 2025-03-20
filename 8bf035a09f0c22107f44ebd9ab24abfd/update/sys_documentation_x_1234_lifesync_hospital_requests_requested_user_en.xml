@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="requested_user" label="Requested User" language="en" table="x_1234_lifesync_hospital_requests">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>requested_user</element>
+            <help/>
+            <hint/>
+            <label>Requested User</label>
+            <language>en</language>
+            <name>x_1234_lifesync_hospital_requests</name>
+            <plural>Requested Users</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2025-03-02 07:53:11</sys_created_on>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Requested User</sys_name>
+            <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+            <sys_update_name>sys_documentation_x_1234_lifesync_hospital_requests_requested_user_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2025-03-02 07:53:11</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

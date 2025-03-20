@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="DELETE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml, application/pdf</consumes>
+        <consumes_customized>true</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>POST</http_method>
+        <name>uploadFile</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+	console.log("Here");
+    try {
+        var attachments = request.getAttachments();
+        var attachmentSysId = null;
+		console.log("Inside REST Script");
+        if (attachments && attachments.hasNext()) {
+            var iterator = attachments.iterator();
+            while (iterator.hasNext()) {
+                var attachment = iterator.next();
+                attachmentSysId = attachment.getSysId();
+                gs.info('DocumentUploadAPI: File uploaded - Sys ID: ' + attachmentSysId + ', Name: ' + attachment.getFileName());
+            }
+        } else {
+            throw new Error('No file uploaded');
+        }
+
+        var recordGr = new GlideRecord('x_1234_lifesync_lifesync_records');
+        recordGr.initialize();
+        recordGr.setValue('Userid', request.queryParams.user_id || gs.getUserID());
+        recordGr.setValue('Hospital_Name', 'Unknown');
+        recordGr.setValue('Summary', 'Document uploaded, pending analysis');
+        recordGr.setValue('DocumentType', 'Other');
+        recordGr.setValue('Document', attachmentSysId);
+        var recordId = recordGr.insert();
+
+        gs.info('DocumentUploadAPI: Record inserted - ID: ' + recordId);
+        response.setStatus(200);
+        return { success: true, recordId: recordId };
+    } catch (e) {
+        gs.error('DocumentUploadAPI: Error - ' + e.message);
+        response.setStatus(500);
+        return { error: e.message };
+    }
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1234_lifesync/documentuploadapi</operation_uri>
+        <produces>application/json,application/xml,text/xml, application/pdf</produces>
+        <produces_customized>true</produces_customized>
+        <relative_path>/</relative_path>
+        <request_example/>
+        <requires_acl_authorization>false</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 19:46:10</sys_created_on>
+        <sys_id>d9779c559fc022107f44ebd9ab24ab25</sys_id>
+        <sys_mod_count>30</sys_mod_count>
+        <sys_name>uploadFile</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ws_operation_d9779c559fc022107f44ebd9ab24ab25</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-03 10:44:06</sys_updated_on>
+        <web_service_definition display_value="DocumentUploadAPI">d3d690559fc022107f44ebd9ab24ab31</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_es_latest_script action="DELETE">
+        <id>d9779c559fc022107f44ebd9ab24ab25</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 19:46:10</sys_created_on>
+        <sys_id>40c75c559fc022107f44ebd9ab24aba9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-01 19:46:10</sys_updated_on>
+        <table>sys_ws_operation</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</application>
+        <file_path/>
+        <instance_id>863b215cc3d31a10d7299dcd2b01313a</instance_id>
+        <instance_name>mav-jan-2515-0010</instance_name>
+        <name>sys_ws_operation_d9779c559fc022107f44ebd9ab24ab25</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ws_operation"&gt;&lt;sys_ws_operation action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;consumes&gt;application/json,application/xml,text/xml, application/pdf&lt;/consumes&gt;&lt;consumes_customized&gt;true&lt;/consumes_customized&gt;&lt;default_operation_uri/&gt;&lt;enforce_acl&gt;cf9d01d3e73003009d6247e603f6a990&lt;/enforce_acl&gt;&lt;http_method&gt;POST&lt;/http_method&gt;&lt;name&gt;uploadFile&lt;/name&gt;&lt;operation_script&gt;&lt;![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+	console.log("Here");
+    try {
+        var attachments = request.getAttachments();
+        var attachmentSysId = null;
+		console.log("Inside REST Script");
+        if (attachments &amp;&amp; attachments.hasNext()) {
+            var iterator = attachments.iterator();
+            while (iterator.hasNext()) {
+                var attachment = iterator.next();
+                attachmentSysId = attachment.getSysId();
+                gs.info('DocumentUploadAPI: File uploaded - Sys ID: ' + attachmentSysId + ', Name: ' + attachment.getFileName());
+            }
+        } else {
+            throw new Error('No file uploaded');
+        }
+
+        var recordGr = new GlideRecord('x_1234_lifesync_lifesync_records');
+        recordGr.initialize();
+        recordGr.setValue('Userid', request.queryParams.user_id || gs.getUserID());
+        recordGr.setValue('Hospital_Name', 'Unknown');
+        recordGr.setValue('Summary', 'Document uploaded, pending analysis');
+        recordGr.setValue('DocumentType', 'Other');
+        recordGr.setValue('Document', attachmentSysId);
+        var recordId = recordGr.insert();
+
+        gs.info('DocumentUploadAPI: Record inserted - ID: ' + recordId);
+        response.setStatus(200);
+        return { success: true, recordId: recordId };
+    } catch (e) {
+        gs.error('DocumentUploadAPI: Error - ' + e.message);
+        response.setStatus(500);
+        return { error: e.message };
+    }
+})(request, response);]]&gt;&lt;/operation_script&gt;&lt;operation_uri&gt;/api/x_1234_lifesync/documentuploadapi&lt;/operation_uri&gt;&lt;produces&gt;application/json,application/xml,text/xml, application/pdf&lt;/produces&gt;&lt;produces_customized&gt;true&lt;/produces_customized&gt;&lt;relative_path&gt;/&lt;/relative_path&gt;&lt;request_example/&gt;&lt;requires_acl_authorization&gt;false&lt;/requires_acl_authorization&gt;&lt;requires_authentication&gt;true&lt;/requires_authentication&gt;&lt;requires_snc_internal_role&gt;true&lt;/requires_snc_internal_role&gt;&lt;short_description/&gt;&lt;sys_class_name&gt;sys_ws_operation&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-01 19:46:10&lt;/sys_created_on&gt;&lt;sys_id&gt;d9779c559fc022107f44ebd9ab24ab25&lt;/sys_id&gt;&lt;sys_mod_count&gt;30&lt;/sys_mod_count&gt;&lt;sys_name&gt;uploadFile&lt;/sys_name&gt;&lt;sys_package display_value="LifeSync" source="x_1234_lifesync"&gt;8bf035a09f0c22107f44ebd9ab24abfd&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="LifeSync"&gt;8bf035a09f0c22107f44ebd9ab24abfd&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ws_operation_d9779c559fc022107f44ebd9ab24ab25&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-03 10:44:06&lt;/sys_updated_on&gt;&lt;web_service_definition display_value="DocumentUploadAPI"&gt;d3d690559fc022107f44ebd9ab24ab31&lt;/web_service_definition&gt;&lt;web_service_version/&gt;&lt;/sys_ws_operation&gt;&lt;sys_es_latest_script action="INSERT_OR_UPDATE"&gt;&lt;id&gt;d9779c559fc022107f44ebd9ab24ab25&lt;/id&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-01 19:46:10&lt;/sys_created_on&gt;&lt;sys_id&gt;40c75c559fc022107f44ebd9ab24aba9&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-01 19:46:10&lt;/sys_updated_on&gt;&lt;table&gt;sys_ws_operation&lt;/table&gt;&lt;use_es_latest&gt;true&lt;/use_es_latest&gt;&lt;/sys_es_latest_script&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-561362383</payload_hash>
+        <record_name>uploadFile</record_name>
+        <reverted_from/>
+        <source>07f075a09f0c22107f44ebd9ab24ab02</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-03 10:44:06</sys_created_on>
+        <sys_id>1bde64319f4422107f44ebd9ab24ab1f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1955b9b1acb0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-03 10:44:06</sys_updated_on>
+        <type>Scripted REST Resource</type>
+        <update_guid>dfde6431ea442210031ed038e0afb21e</update_guid>
+        <update_guid_history>dfde6431ea442210031ed038e0afb21e:-561362383,f27e2031db442210e82227cc934411e2:-1865711699,ca2d28bdee0422107b8b8717c3ce2141:2116138067,cbb6e8b58e0422102bbb43bb5fc30025:1155332292,4674e4f119042210368b98da945205fa:1948005511,9a4224310a04221080186d7172a41e30:638687353,1a2f143d5ac02210d1eac7581eeec40b:1262724217,927e94f9f1c02210b09127a30b184c78:-161722581,e1cadcb5d0c02210875e115441cf4796:788992143,f2a610b1a9c0221095190435d25a4f2f:1638646984,9c3c84751e80221055d94009abab32c4:609866168,abc5883de74022103f4e3a589a5993f1:-1217581946,bc03ff6563002210835e015fc85fcf21:-1723993204,253859a9db4c22109cb1c2be3725be91:-8267298,fc57d5699c4c221093d200147d48f7d5:-655813837,dfc519e5fc4c2210f46cb9304b140090:-8267298,40745965914c22102d22669e856b27d5:-65198059,efe9d861864822103ed2ca1673422ee4:774321583,016910612e48221041d5ec523302f14b:-1717736471,bf0894ed34082210abeb9b91232319be:-834818073,456798adfc082210a2f571b352ad9a17:1925419759,6da6986de5082210d1ee3471574056e6:1838004000,99229029a508221005be9b83474aa721:-1548431362,0921d4a5bb0822103c1d35af29cc6894:-725885762,bb305c657f08221010040126735bfc31:-1731474206,363f4825d2082210b9e10778206493f5:-1813317600,253ec4a10a082210c9f602ab008147c9:1909236300,ac0376154340221005f1507ea359161a:28139888,d9695019a1c0221057f69dd710d15331:-137461377,40c7d0950ac022101c17be033c3195ac:-1474637463</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-03 10:48:56</sys_created_on>
+        <sys_db_object display_value="" name="sys_ws_operation">sys_ws_operation</sys_db_object>
+        <sys_id>01d323d8dfb0466e803a86ea05e58d64</sys_id>
+        <sys_metadata>d9779c559fc022107f44ebd9ab24ab25</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>uploadFile</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_scope_delete display_value="">2ca23217b0054b7689152463f93a81b9</sys_scope_delete>
+        <sys_update_name>sys_ws_operation_d9779c559fc022107f44ebd9ab24ab25</sys_update_name>
+        <sys_update_version display_value="sys_ws_operation_d9779c559fc022107f44ebd9ab24ab25">1bde64319f4422107f44ebd9ab24ab1f</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-03 10:48:56</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance">
+    <sp_instance action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <glyph/>
+        <id/>
+        <order>1</order>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">f8a40df49fc022107f44ebd9ab24ab3d</sp_column>
+        <sp_widget display_value="upload">f0a489f49fc022107f44ebd9ab24ab63</sp_widget>
+        <sys_class_name>sp_instance</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-28 09:45:19</sys_created_on>
+        <sys_id>c9a40df49fc022107f44ebd9ab24ab40</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sp_instance_c9a40df49fc022107f44ebd9ab24ab40</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-28 09:45:19</sys_updated_on>
+        <title/>
+        <url/>
+        <widget_parameters/>
+    </sp_instance>
+    <sys_translated_text action="DELETE" query="documentkey=c9a40df49fc022107f44ebd9ab24ab40"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</application>
+        <file_path/>
+        <instance_id>863b215cc3d31a10d7299dcd2b01313a</instance_id>
+        <instance_name>mav-jan-2515-0010</instance_name>
+        <name>sp_instance_c9a40df49fc022107f44ebd9ab24ab40</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance"><sp_instance action="INSERT_OR_UPDATE"><active>true</active><class_name/><color>default</color><css/><glyph/><id/><order>1</order><roles/><short_description/><size>md</size><sp_column display_value="1">f8a40df49fc022107f44ebd9ab24ab3d</sp_column><sp_widget display_value="upload">f0a489f49fc022107f44ebd9ab24ab63</sp_widget><sys_class_name>sp_instance</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-02-28 09:45:19</sys_created_on><sys_id>c9a40df49fc022107f44ebd9ab24ab40</sys_id><sys_mod_count>0</sys_mod_count><sys_name/><sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package><sys_policy/><sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope><sys_update_name>sp_instance_c9a40df49fc022107f44ebd9ab24ab40</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-02-28 09:45:19</sys_updated_on><title/><url/><widget_parameters/></sp_instance><sys_translated_text action="delete_multiple" query="documentkey=c9a40df49fc022107f44ebd9ab24ab40"/></record_update>]]></payload>
+        <payload_hash>1789302907</payload_hash>
+        <record_name/>
+        <reverted_from/>
+        <source>07f075a09f0c22107f44ebd9ab24ab02</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-28 09:45:19</sys_created_on>
+        <sys_id>c9a40df49fc022107f44ebd9ab24ab43</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1954bf2353f0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-28 09:45:19</sys_updated_on>
+        <type>Instance</type>
+        <update_guid>cda40df455c02210768a0a32e0114542</update_guid>
+        <update_guid_history>cda40df455c02210768a0a32e0114542:1789302907</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">f59f15f89f4422107f44ebd9ab24aba4</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-28 11:43:04</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance">sp_instance</sys_db_object>
+        <sys_id>004411ec456545809eb64786521813c9</sys_id>
+        <sys_metadata>c9a40df49fc022107f44ebd9ab24ab40</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_scope_delete display_value="">2ca23217b0054b7689152463f93a81b9</sys_scope_delete>
+        <sys_update_name>sp_instance_c9a40df49fc022107f44ebd9ab24ab40</sys_update_name>
+        <sys_update_version display_value="sp_instance_c9a40df49fc022107f44ebd9ab24ab40">c9a40df49fc022107f44ebd9ab24ab43</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-28 11:43:04</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

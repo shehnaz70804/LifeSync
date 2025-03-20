@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_action_param_map">
+    <sys_sg_action_param_map action="INSERT_OR_UPDATE">
+        <button display_value="Edit Button (Request)">cbd2f5249f0c22107f44ebd9ab24abfd</button>
+        <item_parameter display_value="Request request_id">83d2f5249f0c22107f44ebd9ab24abfc</item_parameter>
+        <sys_class_name>sys_sg_action_param_map</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-27 18:28:48</sys_created_on>
+        <sys_id>4fd239249f0c22107f44ebd9ab24ab01</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>83d2f5249f0c22107f44ebd9ab24abfc</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_sg_action_param_map_4fd239249f0c22107f44ebd9ab24ab01</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-27 18:28:48</sys_updated_on>
+        <ui_parameter display_value="Request id">cfd2f5249f0c22107f44ebd9ab24abfe</ui_parameter>
+    </sys_sg_action_param_map>
+</record_update>

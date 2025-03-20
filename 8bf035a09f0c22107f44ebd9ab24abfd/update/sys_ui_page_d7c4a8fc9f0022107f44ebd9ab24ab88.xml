@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[function generateSummary(sysId, document) {
+    var token = document.getElementById('g_ck').value;
+    if (!token) {
+        alert('Session error. Please log in again.');
+        return;
+    }
+
+    var ga = new GlideAjax('LifeSyncAISummary');
+    ga.addParam('sysparm_name', 'generateSummary');
+    ga.addParam('sysparm_sys_id', sysId);
+    ga.addParam('sysparm_document', document);
+    ga.getXML(function(response) {
+        var answer = response.responseXML.documentElement.getAttribute('answer');
+        try {
+            var data = JSON.parse(answer);
+            if (data.success) {
+                document.getElementById('summary-' + sysId).innerText = data.summary;
+            } else {
+                alert('Failed to generate summary: ' + (data.message || 'Unknown error'));
+            }
+        } catch (e) {
+            alert('Error parsing response: ' + e.message);
+        }
+    });
+}]]></client_script>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_1234_lifesync_records.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+    <g:evaluate var="currentUserId">
+        var uid = gs.getUserID();
+        gs.info('UI Page - Current User ID: ' + (uid || 'empty'));
+        uid;
+    </g:evaluate>
+    <g:evaluate var="registeredUserId">
+        var gr = new GlideRecord('x_1234_lifesync_lifesync_register');
+        gr.addQuery('u_sys_user', currentUserId);
+        gr.query();
+        if (gr.next()) {
+            var regId = gr.user_id.toString();
+            gs.info('UI Page - Registered User ID: ' + regId);
+            regId;
+        } else {
+            gs.info('UI Page - No registered user ID for sys_id: ' + currentUserId);
+            '';
+        }
+    </g:evaluate>
+
+    <input type="hidden" id="g_ck" value="$[gs.getSession().getSessionToken()]"/>
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #f5f7fa; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #003087; border-bottom: 2px solid #0078d4; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; background-color: #fff; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background-color: #0078d4; color: white; }
+        tr:hover { background-color: #e6f0fa; }
+        .no-records { text-align: center; padding: 20px; color: #666; }
+        button { background-color: #0078d4; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #005ba1; }
+        .upload-section { margin-bottom: 20px; }
+    </style>
+
+    <div class="container">
+        <h1>My Health Records</h1>
+        <p>Debug: Sys ID = ${currentUserId}, Registered User ID = ${registeredUserId}</p>
+
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <input type="file" id="fileInput" />
+            <button onclick="uploadFile()">Upload Document</button>
+        </div>
+
+        <!-- Records Table -->
+        <j:if test="${empty currentUserId}">
+            <p>Please log in to view records.</p>
+        </j:if>
+        <j:if test="${!empty currentUserId}">
+            <j:if test="${empty registeredUserId}">
+                <p>No registered user ID found for Sys ID: ${currentUserId}. Please ensure you’re registered.</p>
+            </j:if>
+            <j:if test="${!empty registeredUserId}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Document</th>
+                            <th>Document Type</th>
+                            <th>Hospital Name</th>
+                            <th>Record ID</th>
+                            <th>Summary</th>
+                            <th>User ID</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsBody">
+                        <g:query table="x_1234_lifesync_lifesync_records" query="userid=${registeredUserId}" var="records">
+                            <j:set var="recordCount" value="0" />
+                            <j:while test="${records.next()}">
+                                <j:set var="recordCount" value="${recordCount + 1}" />
+                                <tr>
+                                    <td>${records.document}</td>
+                                    <td>${records.documenttype}</td>
+                                    <td>${records.hospital_name}</td>
+                                    <td>${records.recordid}</td>
+                                    <td>${records.summary}</td>
+                                    <td>${records.userid}</td>
+                                </tr>
+                            </j:while>
+                            <j:if test="${recordCount == 0}">
+                                <tr><td colspan="6" class="no-records">No records found for User ID: ${registeredUserId}</td></tr>
+                            </j:if>
+                        </g:query>
+                        <tr><td colspan="6">Debug: Loaded ${recordCount} records.</td></tr>
+                    </tbody>
+                </table>
+            </j:if>
+        </j:if>
+    </div>
+
+    <script>
+        function uploadFile() {
+            var fileInput = document.getElementById('fileInput');
+            var file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+            var token = document.getElementById('g_ck').value;
+            if (!token) {
+                alert('Session expired. Please log in again.');
+                return;
+            }
+            var ga = new GlideAjax('LifeSyncDocumentProcessor');
+            ga.addParam('sysparm_name', 'processDocument');
+            ga.addParam('sysparm_file_name', file.name);
+            ga.addParam('sysparm_userid', '${registeredUserId}');
+            ga.getXML(function(response) {
+                var answer = response.responseXML.documentElement.getAttribute('answer');
+                alert(answer);
+                location.reload(); // Refresh to show new record
+            });
+        }
+    </script>
+</j:jelly>]]></html>
+        <name>records</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-28 07:32:13</sys_created_on>
+        <sys_id>d7c4a8fc9f0022107f44ebd9ab24ab88</sys_id>
+        <sys_mod_count>80</sys_mod_count>
+        <sys_name>records</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ui_page_d7c4a8fc9f0022107f44ebd9ab24ab88</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-12 15:15:35</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>d7c4a8fc9f0022107f44ebd9ab24ab88</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-28 07:32:12</sys_created_on>
+        <sys_id>c7266c709f4022107f44ebd9ab24aba4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-28 07:32:12</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

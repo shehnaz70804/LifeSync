@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_instance_vlist">
+    <sp_instance_vlist action="DELETE">
+        <active>true</active>
+        <class_name/>
+        <color>default</color>
+        <css/>
+        <display_field>file_name</display_field>
+        <field_list/>
+        <filter/>
+        <glyph/>
+        <id/>
+        <maximum_entries>10</maximum_entries>
+        <order>1</order>
+        <order_by/>
+        <order_direction>asc</order_direction>
+        <roles/>
+        <short_description/>
+        <size>md</size>
+        <sp_column display_value="1">2ac119789f0422107f44ebd9ab24ab9e</sp_column>
+        <sp_page/>
+        <sp_widget display_value="Simple List">5b255672cb03020000f8d856634c9c28</sp_widget>
+        <sys_class_name>sp_instance_vlist</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-12 05:12:26</sys_created_on>
+        <sys_id>bc4931a89f1022107f44ebd9ab24ab48</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sp_instance_vlist_bc4931a89f1022107f44ebd9ab24ab48</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-12 05:37:36</sys_updated_on>
+        <table>x_1234_lifesync_u_document_storage</table>
+        <title/>
+        <url/>
+        <widget_parameters><![CDATA[{
+	"always_show": {
+		"value": "true",
+		"displayValue": "true"
+	},
+	"panel_body_height": {
+		"value": "",
+		"displayValue": ""
+	},
+	"image_field": {
+		"value": "",
+		"displayValue": ""
+	},
+	"secondary_fields": {
+		"value": "cloudinary_url",
+		"displayValue": "cloudinary_url"
+	},
+	"rounded_images": {
+		"value": "",
+		"displayValue": ""
+	},
+	"list_page": {
+		"value": "",
+		"displayValue": ""
+	},
+	"hide_footer": {
+		"value": "",
+		"displayValue": ""
+	},
+	"view": {
+		"value": "",
+		"displayValue": ""
+	},
+	"disable_record_watcher": {
+		"value": "",
+		"displayValue": ""
+	},
+	"filter_acls": {
+		"value": "false",
+		"displayValue": "false"
+	}
+}]]></widget_parameters>
+    </sp_instance_vlist>
+    <sys_translated_text action="DELETE" query="documentkey=bc4931a89f1022107f44ebd9ab24ab48"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</application>
+        <file_path/>
+        <instance_id>863b215cc3d31a10d7299dcd2b01313a</instance_id>
+        <instance_name>mav-jan-2515-0010</instance_name>
+        <name>sp_instance_vlist_bc4931a89f1022107f44ebd9ab24ab48</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sp_instance_vlist"&gt;&lt;sp_instance_vlist action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;class_name/&gt;&lt;color&gt;default&lt;/color&gt;&lt;css/&gt;&lt;display_field&gt;file_name&lt;/display_field&gt;&lt;field_list/&gt;&lt;filter/&gt;&lt;glyph/&gt;&lt;id/&gt;&lt;maximum_entries&gt;10&lt;/maximum_entries&gt;&lt;order&gt;1&lt;/order&gt;&lt;order_by/&gt;&lt;order_direction&gt;asc&lt;/order_direction&gt;&lt;roles/&gt;&lt;short_description/&gt;&lt;size&gt;md&lt;/size&gt;&lt;sp_column display_value="1"&gt;2ac119789f0422107f44ebd9ab24ab9e&lt;/sp_column&gt;&lt;sp_page/&gt;&lt;sp_widget display_value="Simple List"&gt;5b255672cb03020000f8d856634c9c28&lt;/sp_widget&gt;&lt;sys_class_name&gt;sp_instance_vlist&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-03-12 05:12:26&lt;/sys_created_on&gt;&lt;sys_id&gt;bc4931a89f1022107f44ebd9ab24ab48&lt;/sys_id&gt;&lt;sys_mod_count&gt;2&lt;/sys_mod_count&gt;&lt;sys_name/&gt;&lt;sys_package display_value="LifeSync" source="x_1234_lifesync"&gt;8bf035a09f0c22107f44ebd9ab24abfd&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="LifeSync"&gt;8bf035a09f0c22107f44ebd9ab24abfd&lt;/sys_scope&gt;&lt;sys_update_name&gt;sp_instance_vlist_bc4931a89f1022107f44ebd9ab24ab48&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-03-12 05:37:36&lt;/sys_updated_on&gt;&lt;table&gt;x_1234_lifesync_u_document_storage&lt;/table&gt;&lt;title/&gt;&lt;url/&gt;&lt;widget_parameters&gt;&lt;![CDATA[{
+	"always_show": {
+		"value": "true",
+		"displayValue": "true"
+	},
+	"panel_body_height": {
+		"value": "",
+		"displayValue": ""
+	},
+	"image_field": {
+		"value": "",
+		"displayValue": ""
+	},
+	"secondary_fields": {
+		"value": "cloudinary_url",
+		"displayValue": "cloudinary_url"
+	},
+	"rounded_images": {
+		"value": "",
+		"displayValue": ""
+	},
+	"list_page": {
+		"value": "",
+		"displayValue": ""
+	},
+	"hide_footer": {
+		"value": "",
+		"displayValue": ""
+	},
+	"view": {
+		"value": "",
+		"displayValue": ""
+	},
+	"disable_record_watcher": {
+		"value": "",
+		"displayValue": ""
+	},
+	"filter_acls": {
+		"value": "false",
+		"displayValue": "false"
+	}
+}]]&gt;&lt;/widget_parameters&gt;&lt;/sp_instance_vlist&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=bc4931a89f1022107f44ebd9ab24ab48"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>2015523651</payload_hash>
+        <record_name/>
+        <reverted_from/>
+        <source>07f075a09f0c22107f44ebd9ab24ab02</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-12 05:37:36</sys_created_on>
+        <sys_id>550fbdac9f1022107f44ebd9ab24abcf</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19588dbbc000000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-12 05:37:36</sys_updated_on>
+        <type>Instance of Simple List</type>
+        <update_guid>1d0fbdac6d102210ea6a2ee2ddbb74ce</update_guid>
+        <update_guid_history>1d0fbdac6d102210ea6a2ee2ddbb74ce:2015523651,018b7de829102210e4cb7f1c8afbc07e:549742468,344931a8f31022104254d98f892f984b:967189795</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="">bd0f7dac9f1022107f44ebd9ab24ab96</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-12 05:37:39</sys_created_on>
+        <sys_db_object display_value="" name="sp_instance_vlist">sp_instance_vlist</sys_db_object>
+        <sys_id>ac6541e677494469bad3df959722ea79</sys_id>
+        <sys_metadata>bc4931a89f1022107f44ebd9ab24ab48</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_scope_delete display_value="">2ca23217b0054b7689152463f93a81b9</sys_scope_delete>
+        <sys_update_name>sp_instance_vlist_bc4931a89f1022107f44ebd9ab24ab48</sys_update_name>
+        <sys_update_version display_value="sp_instance_vlist_bc4931a89f1022107f44ebd9ab24ab48">550fbdac9f1022107f44ebd9ab24abcf</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-12 05:37:39</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

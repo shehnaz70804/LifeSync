@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[function($scope, $http) {
+  var c = this;
+  c.loading = true;
+
+  // Get user info
+  $http.get('/api/now/sp/user').then(function(response) {
+    c.userName = response.data.result?.user_name || 'Guest';
+    c.userSysId = response.data.result?.sys_id;
+  }, function(error) {
+    console.error('User Info Error:', error.data || error.statusText || 'Unknown error');
+    c.userName = 'Guest';
+  }).finally(function() {
+    c.loading = false;
+  });
+
+  // Fetch Records
+  c.loadRecords = function() {
+    c.loading = true;
+    $http.get('/api/now/table/x_1234_lifesync_u_document_storage?sysparm_limit=10000&sysparm_fields=file_name,cloudinary_url,summary')
+      .then(function(response) {
+        console.log('Records Response:', response.data);
+        if (response.data.result) {
+          c.records = response.data.result;
+          c.filteredRecords = c.records; // Initialize filteredRecords with all records
+          c.debugInfo = "Debug: Loaded " + c.records.length + " records.";
+        } else {
+          c.records = [];
+          c.filteredRecords = [];
+          c.debugInfo = "Debug: No records found.";
+        }
+      }, function(error) {
+        console.error('Records Error:', error.data || error.statusText || 'Unknown error');
+        c.debugInfo = "Debug: Error fetching records - " + error.statusText;
+      }).finally(function() {
+        c.loading = false;
+      });
+  };
+  c.loadRecords();
+
+  // Summarize All Documents
+  c.summarizeAll = function() {
+    c.loading = true;
+    $http.get('/api/x_1234_lifesync/lifesync_document_summarizer/summarize_all')
+      .then(function(response) {
+        console.log('Summarization Response:', response.data);
+        alert(response.data.message || 'Summarization complete');
+        c.loadRecords(); // Refresh records after summarization
+      }, function(error) {
+        console.error('Summarization Error:', error.data || error.statusText || 'Unknown error');
+        alert('Error summarizing documents: ' + (error.statusText || 'Request failed'));
+      }).finally(function() {
+        c.loading = false;
+      });
+  };
+
+  // Filter Records Based on Search Query
+  c.filterRecords = function() {
+    if (!c.searchQuery || c.searchQuery.trim() === '') {
+      c.filteredRecords = c.records; // Show all records if search is empty
+      c.debugInfo = "Debug: Loaded " + c.records.length + " records.";
+    } else {
+      var query = c.searchQuery.toLowerCase().trim();
+      c.filteredRecords = c.records.filter(function(record) {
+        var fileName = (record.file_name || '').toLowerCase();
+        var summary = (record.summary || '').toLowerCase();
+        return fileName.includes(query) || summary.includes(query);
+      });
+      c.debugInfo = "Debug: Showing " + c.filteredRecords.length + " of " + c.records.length + " records.";
+    }
+  };
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>/* Global Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #d8e1e5, #e8ecef); /* Soft gray gradient */
+  margin: 0;
+  padding: 0;
+  color: #495057; /* Charcoal gray for text */
+  min-height: 100vh;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  width: 90%;
+  margin: 20px auto;
+  padding: 0;
+  background: #e8ecef; /* Soft gray */
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* Header */
+header {
+  background: linear-gradient(90deg, #2a6a6e, #4d9999); /* Deep teal gradient */
+  color: #fff;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between Back button and h1 */
+}
+
+header h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Back Button */
+.back-button {
+  background: linear-gradient(45deg, #5d8294, #4d9999); /* Slate blue to teal */
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.back-button:hover {
+  background: linear-gradient(45deg, #4d6f80, #438989); /* Darker shades */
+  transform: scale(1.05);
+}
+
+/* Profile Section */
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+.profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 2px solid #fff;
+  transition: transform 0.2s ease;
+}
+
+.profile img:hover {
+  transform: scale(1.1);
+}
+
+.profile span {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Main Section */
+.section {
+  padding: 20px;
+}
+
+/* Section Heading */
+.section h2 {
+  color: #495057;
+  margin: 0 0 15px 0;
+  font-size: 22px;
+  border-bottom: 2px solid #5d8294; /* Slate blue */
+  padding-bottom: 5px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* Button and Search Bar Container */
+.section &gt; div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Summarize Button */
+button {
+  background: linear-gradient(45deg, #2a6a6e, #4d9999); /* Deep teal gradient */
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background: linear-gradient(45deg, #245c5f, #438989); /* Darker teal */
+  transform: scale(1.05);
+}
+
+/* Search Bar */
+.search-bar {
+  padding: 10px;
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #ced4da; /* Light gray */
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fff;
+  box-shadow: none;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 15px;
+  border-radius: 6px;
+  background: #e8ecef;
+}
+
+/* Table */
+table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  background: #e8ecef;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ced4da;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+th {
+  background: #d8e1e5; /* Slightly darker gray */
+  color: #495057;
+  font-weight: 500;
+}
+
+tr:hover {
+  background-color: #b0d4d6; /* Light teal hover */
+}
+
+.no-records {
+  text-align: center;
+  padding: 20px;
+  color: #6c757d; /* Muted gray */
+  white-space: normal;
+}
+
+/* Loading State */
+div[ng-if="c.loading"] {
+  text-align: center;
+  padding: 20px;
+  color: #6c757d;
+}
+
+/* Debug Info */
+p {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    margin: 10px auto;
+  }
+  header {
+    padding: 10px 15px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-content {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .profile {
+    margin-top: 10px;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .section &gt; div {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  button, .search-bar {
+    width: 100%;
+    max-width: none;
+  }
+  th, td {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 20px;
+  }
+  .profile img {
+    width: 32px;
+    height: 32px;
+  }
+  .profile span {
+    font-size: 14px;
+  }
+  .section {
+    padding: 15px;
+  }
+  .section h2 {
+    font-size: 18px;
+  }
+  th, td {
+    padding: 8px;
+    font-size: 12px;
+  }
+  .back-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>lifesync_home_content</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>LifeSync Home Content</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  // Empty for now—add server-side logic if needed later
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-12 05:36:31</sys_created_on>
+        <sys_id>e1ce79ac9f1022107f44ebd9ab24abc0</sys_id>
+        <sys_mod_count>34</sys_mod_count>
+        <sys_name>LifeSync Home Content</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sp_widget_e1ce79ac9f1022107f44ebd9ab24abc0</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 13:34:41</sys_updated_on>
+        <template><![CDATA[<div class="container">
+  <header>
+    <div class="header-content">
+      <button class="back-button" onclick="window.location.href='/x_1234_lifesync_home.do'">Back</button>
+      <h1>LifeSync</h1>
+    </div>
+    <div class="profile">
+      <img ng-src="/api/now/attachment/{{c.userSysId}}/file" alt="Profile Picture" ng-if="c.userSysId" />
+      <img src="/images/default_avatar.jpg" alt="Profile Picture" ng-if="!c.userSysId" />
+      <span>{{c.userName}}</span>
+    </div>
+  </header>
+
+  <div class="section">
+    <h2>My Records</h2>
+    <div ng-if="c.loading">Loading...</div>
+    <div ng-if="!c.loading">
+      <button ng-click="c.summarizeAll()">Summarize All Documents</button>
+      <input type="text" class="search-bar" ng-model="c.searchQuery" placeholder="Search by file name or summary..." ng-change="c.filterRecords()" />
+    </div>
+    <div class="table-wrapper" ng-if="!c.loading">
+      <table>
+        <thead>
+          <tr>
+            <th>File Name</th>
+            <th>Cloudinary URL</th>
+            <th>Summary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="record in c.filteredRecords">
+            <td>{{record.file_name}}</td>
+            <td><a href="{{record.cloudinary_url}}" target="_blank">{{record.cloudinary_url}}</a></td>
+            <td>{{record.summary}}</td>
+          </tr>
+          <tr ng-if="!c.filteredRecords || c.filteredRecords.length === 0">
+            <td colspan="3" class="no-records">No matching records found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p ng-bind="c.debugInfo" ng-if="!c.loading"></p>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[console.log('Client Script loaded - submitRequest() is available');
+
+function submitRequest(event) {
+    console.log('submitRequest() called - Starting submission process');
+    event.preventDefault(); // Stop form submission and page reload
+
+    var hospitalId = document.getElementById('hospitalId').value;
+    var userId = document.getElementById('userId').value;
+    var description = document.getElementById('description').value;
+
+    console.log('Form data retrieved - Hospital ID: ' + hospitalId + ', User ID: ' + userId + ', Description: ' + description);
+
+    if (!userId || !description) {
+        console.log('Validation failed - Missing fields: userId=' + userId + ', description=' + description);
+        alert('Please fill in all fields.');
+        return;
+    }
+    console.log('Validation passed - All required fields present');
+
+    console.log('Setting up GlideAjax - Calling HospitalRequestHandler');
+    var ga = new GlideAjax('HospitalRequestHandler');
+    ga.addParam('sysparm_name', 'createRequest');
+    ga.addParam('sysparm_hospital_id', hospitalId);
+    ga.addParam('sysparm_user_id', userId);
+    ga.addParam('sysparm_description', description);
+    console.log('GlideAjax parameters set - sysparm_name: createRequest, hospital_id: ' + hospitalId + ', user_id: ' + userId + ', description: ' + description);
+
+    console.log('Sending GlideAjax request');
+    ga.getXMLAnswer(function(response) {
+        console.log('AJAX response received - Raw response: ' + response);
+        var result;
+        try {
+            result = JSON.parse(response);
+            console.log('AJAX response parsed - Result: ' + JSON.stringify(result));
+        } catch (e) {
+            console.log('Error parsing AJAX response - Parse error: ' + e.message);
+            alert('Error parsing server response: ' + e.message);
+            return;
+        }
+
+        if (result.success) {
+            console.log('Request successful - Server confirmed success');
+            alert('Request submitted successfully! Check the table.');
+            // No reload - Logs stay visible
+        } else {
+            console.log('Request failed - Server error: ' + result.error);
+            alert('Error submitting request: ' + result.error);
+        }
+    }, null, function(error) {
+        console.log('AJAX request failed - Error: ' + error);
+        alert('Error contacting server: ' + error);
+    });
+
+    console.log('submitRequest() ending - Submission complete');
+}]]></client_script>
+        <description/>
+        <direct>true</direct>
+        <endpoint>x_1234_lifesync_hospital_requests.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+    <style>
+        /* Twilight Professional Theme */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #d8e1e5, #e8ecef); /* Soft gradient background */
+            margin: 0;
+            padding: 20px;
+            color: #495057; /* Charcoal gray text */
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #495057; /* Charcoal gray */
+            text-align: center;
+            font-size: 28px;
+            background: linear-gradient(90deg, #2a6a6e, #4d9999); /* Deep teal gradient */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .section {
+            background-color: #e8ecef; /* Soft gray */
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+            border-top: 4px solid #5d8294; /* Slate blue accent */
+        }
+
+        .section h2 {
+            color: #2a6a6e; /* Deep teal */
+            border-bottom: 2px solid #2a6a6e;
+            padding-bottom: 5px;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ced4da; /* Light gray border */
+        }
+
+        th {
+            background: linear-gradient(45deg, #2a6a6e, #4d9999); /* Teal gradient */
+            color: #fff;
+            font-weight: 500;
+        }
+
+        tr:hover {
+            background-color: #d8e1e5; /* Lighter gray on hover */
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: 500;
+            color: #495057; /* Charcoal gray */
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ced4da; /* Light gray border */
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            background-color: #fff;
+            box-shadow: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        input[type="submit"] {
+            background: linear-gradient(45deg, #2a6a6e, #4d9999); /* Deep teal gradient */
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        input[type="submit"]:hover {
+            background: linear-gradient(45deg, #245c5f, #438989); /* Darker teal */
+            transform: scale(1.05); /* Slight zoom */
+        }
+
+        input[type="submit"]:active {
+            transform: scale(0.98); /* Slight press */
+        }
+    </style>
+
+    <g:evaluate var="hospitalId" jelly="true">
+        gs.getParameter('hospital_id') || 'Unknown';
+    </g:evaluate>
+
+    <div class="container">
+        <h1>Hospital Requests</h1>
+
+        <!-- Approved Requests -->
+        <div class="section">
+            <h2>Approved Requests</h2>
+            <table id="approvedTable">
+                <tr><th>User ID</th><th>Description</th><th>Approved Date</th></tr>
+                <g:query table="x_1234_lifesync_hospital_requests" query="hospital_id=${hospitalId}^status=Approved" var="approved">
+                    <j:while test="${approved.next()}">
+                        <tr>
+                            <td>${approved.user_id}</td>
+                            <td>${approved.description}</td>
+                            <td>${approved.approved_date || ''}</td>
+                        </tr>
+                    </j:while>
+                </g:query>
+            </table>
+        </div>
+
+        <!-- Pending Requests -->
+        <div class="section">
+            <h2>Pending Requests</h2>
+            <table id="pendingTable">
+                <tr><th>user id</th><th>Description</th><th>Requested Date</th></tr>
+                <g:query table="x_1234_lifesync_hospital_requests" query="hospital_id=${hospitalId}^status=Pending" var="pending">
+                    <j:while test="${pending.next()}">
+                        <tr>
+                            <td>${pending.user_id}</td>
+                            <td>${pending.description}</td>
+                            <td>${pending.requested_date || ''}</td>
+                        </tr>
+                    </j:while>
+                </g:query>
+            </table>
+        </div>
+
+        <!-- Create Record Request -->
+        <div class="section">
+            <h2>Create Record Request</h2>
+            <form id="requestForm" onsubmit="return submitRequest();">
+                <input type="hidden" id="hospitalId" name="hospitalId" value="${hospitalId}"/>
+                <label for="userId">QR Code</label>
+                <input type="text" id="userId" name="userId" />
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="e.g., Requesting patient records for review" required="required"></textarea>
+                <input type="submit" value="Submit Request"/>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function submitRequest() {
+            var hospitalId = document.getElementById('hospitalId').value;
+            var userId = document.getElementById('userId').value;
+            var description = document.getElementById('description').value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/now/table/x_1234_lifesync_hospital_requests', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('X-UserToken', document.getElementById('g_ck').value);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 201) {
+                        alert('Request submitted successfully!');
+                        window.location.reload(); // Refresh to show new pending request
+                    } else {
+                        alert('Failed to submit request: ' + xhr.statusText);
+                    }
+                }
+            };
+
+            var data = {
+                hospital_id: hospitalId,
+                user_id: userId,
+                description: description,
+                status: 'Pending',
+                requested_date: new Date().toISOString()
+            };
+            xhr.send(JSON.stringify(data));
+            return false; // Prevent form submission
+        }
+    </script>
+</j:jelly>]]></html>
+        <name>hospital_requests</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 11:05:40</sys_created_on>
+        <sys_id>c180e28d9f8422107f44ebd9ab24abe0</sys_id>
+        <sys_mod_count>29</sys_mod_count>
+        <sys_name>hospital_requests</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ui_page_c180e28d9f8422107f44ebd9ab24abe0</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-15 05:53:50</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>c180e28d9f8422107f44ebd9ab24abe0</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 11:05:40</sys_created_on>
+        <sys_id>af90e2019fc422107f44ebd9ab24ab78</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-01 11:05:40</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

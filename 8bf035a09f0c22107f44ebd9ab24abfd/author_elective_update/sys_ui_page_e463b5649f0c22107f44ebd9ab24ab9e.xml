@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="DELETE">
+        <category>general</category>
+        <client_script/>
+        <description/>
+        <direct>true</direct>
+        <endpoint>x_1234_lifesync_UI PAGE.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+    <style>
+        .navbar { background-color: #333; overflow: hidden; }
+        .navbar a { float: left; color: white; text-align: center; padding: 14px 16px; text-decoration: none; }
+        .navbar a:hover { background-color: #ddd; color: black; }
+        .search-bar { float: right; padding: 10px; }
+    </style>
+    <div class="navbar">
+        <a href="x_1234_lifesync_UI PAGE.do">Home</a>
+        <a href="x_1234_lifesync_reports.do">Reports</a>
+        <a href="x_1234_lifesync_login.do">Login</a>
+        <a href="x_1234_lifesync_register.do">Register</a>
+        <div class="search-bar">
+            <form action="x_1234_lifesync_search.do" method="get">
+                <input type="text" name="query" placeholder="Search (e.g., Liver disease)" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+    </div>
+    <h1>LifeSync - Home</h1>
+    <p>Welcome to your medical records hub.</p>
+</j:jelly>]]></html>
+        <name>UI PAGE</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-27 18:32:20</sys_created_on>
+        <sys_id>e463b5649f0c22107f44ebd9ab24ab9e</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>UI PAGE</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ui_page_e463b5649f0c22107f44ebd9ab24ab9e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-28 07:40:36</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="DELETE">
+        <id>e463b5649f0c22107f44ebd9ab24ab9e</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-27 18:32:19</sys_created_on>
+        <sys_id>bea3b9e09f0c22107f44ebd9ab24abaf</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-27 18:32:19</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</application>
+        <file_path/>
+        <instance_id>863b215cc3d31a10d7299dcd2b01313a</instance_id>
+        <instance_name>mav-jan-2515-0010</instance_name>
+        <name>sys_ui_page_e463b5649f0c22107f44ebd9ab24ab9e</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_page"&gt;&lt;sys_ui_page action="INSERT_OR_UPDATE"&gt;&lt;category&gt;general&lt;/category&gt;&lt;client_script/&gt;&lt;description/&gt;&lt;direct&gt;true&lt;/direct&gt;&lt;endpoint&gt;x_1234_lifesync_UI PAGE.do&lt;/endpoint&gt;&lt;html&gt;&lt;![CDATA[&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null"&gt;
+    &lt;style&gt;
+        .navbar { background-color: #333; overflow: hidden; }
+        .navbar a { float: left; color: white; text-align: center; padding: 14px 16px; text-decoration: none; }
+        .navbar a:hover { background-color: #ddd; color: black; }
+        .search-bar { float: right; padding: 10px; }
+    &lt;/style&gt;
+    &lt;div class="navbar"&gt;
+        &lt;a href="x_1234_lifesync_UI PAGE.do"&gt;Home&lt;/a&gt;
+        &lt;a href="x_1234_lifesync_reports.do"&gt;Reports&lt;/a&gt;
+        &lt;a href="x_1234_lifesync_login.do"&gt;Login&lt;/a&gt;
+        &lt;a href="x_1234_lifesync_register.do"&gt;Register&lt;/a&gt;
+        &lt;div class="search-bar"&gt;
+            &lt;form action="x_1234_lifesync_search.do" method="get"&gt;
+                &lt;input type="text" name="query" placeholder="Search (e.g., Liver disease)" /&gt;
+                &lt;input type="submit" value="Search" /&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;h1&gt;LifeSync - Home&lt;/h1&gt;
+    &lt;p&gt;Welcome to your medical records hub.&lt;/p&gt;
+&lt;/j:jelly&gt;]]&gt;&lt;/html&gt;&lt;name&gt;UI PAGE&lt;/name&gt;&lt;processing_script/&gt;&lt;sys_class_name&gt;sys_ui_page&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-02-27 18:32:20&lt;/sys_created_on&gt;&lt;sys_id&gt;e463b5649f0c22107f44ebd9ab24ab9e&lt;/sys_id&gt;&lt;sys_mod_count&gt;3&lt;/sys_mod_count&gt;&lt;sys_name&gt;UI PAGE&lt;/sys_name&gt;&lt;sys_package display_value="LifeSync" source="x_1234_lifesync"&gt;8bf035a09f0c22107f44ebd9ab24abfd&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="LifeSync"&gt;8bf035a09f0c22107f44ebd9ab24abfd&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_page_e463b5649f0c22107f44ebd9ab24ab9e&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-02-28 07:40:36&lt;/sys_updated_on&gt;&lt;/sys_ui_page&gt;&lt;sys_es_latest_script action="INSERT_OR_UPDATE"&gt;&lt;id&gt;e463b5649f0c22107f44ebd9ab24ab9e&lt;/id&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2025-02-27 18:32:19&lt;/sys_created_on&gt;&lt;sys_id&gt;bea3b9e09f0c22107f44ebd9ab24abaf&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2025-02-27 18:32:19&lt;/sys_updated_on&gt;&lt;table&gt;sys_ui_page&lt;/table&gt;&lt;use_es_latest&gt;true&lt;/use_es_latest&gt;&lt;/sys_es_latest_script&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1816057783</payload_hash>
+        <record_name>UI PAGE</record_name>
+        <reverted_from/>
+        <source>07f075a09f0c22107f44ebd9ab24ab02</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-28 07:40:36</sys_created_on>
+        <sys_id>0e18ec349f4022107f44ebd9ab24ab4a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1954b8005840000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-28 07:40:36</sys_updated_on>
+        <type>UI Page</type>
+        <update_guid>c218ec34954022102364125bf9d81a4a</update_guid>
+        <update_guid_history>c218ec34954022102364125bf9d81a4a:1816057783,cce76434e54022100cf329e3f94b701b:-1323421825,16a63968cc0c221080931fba0b703a7b:-822303593,0ba33d642b0c221067d43ed06a7b4a62:1114136778</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-03 07:38:20</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_page">sys_ui_page</sys_db_object>
+        <sys_id>3de85c2d51184900a75ff8684c684000</sys_id>
+        <sys_metadata>e463b5649f0c22107f44ebd9ab24ab9e</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>UI PAGE</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_scope_delete display_value="">2ca23217b0054b7689152463f93a81b9</sys_scope_delete>
+        <sys_update_name>sys_ui_page_e463b5649f0c22107f44ebd9ab24ab9e</sys_update_name>
+        <sys_update_version display_value="sys_ui_page_e463b5649f0c22107f44ebd9ab24ab9e">0e18ec349f4022107f44ebd9ab24ab4a</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-03 07:38:20</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

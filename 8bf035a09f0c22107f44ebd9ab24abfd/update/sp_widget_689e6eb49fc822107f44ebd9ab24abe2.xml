@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <category>custom</category>
+        <client_script><![CDATA[api.controller = function() {
+    /* widget controller */
+    var c = this;
+};]]></client_script>
+        <controller_as>c</controller_as>
+        <css/>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>lifesync-dashboard-widget</id>
+        <internal>false</internal>
+        <link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+        <name>lifesync-dashboard-widget</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+  data.reportSysId = '689e6eb49fc822107f44ebd9ab24abe2'; // Replace with the actual sys_id from Step 1
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-28 17:28:08</sys_created_on>
+        <sys_id>689e6eb49fc822107f44ebd9ab24abe2</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>lifesync-dashboard-widget</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sp_widget_689e6eb49fc822107f44ebd9ab24abe2</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-28 19:31:41</sys_updated_on>
+        <template><![CDATA[<div>
+  <h3>LifeSync Dashboard</h3>
+  <a ng-href="/nav_to.do?uri=sys_report.do?sys_id={{c.data.reportSysId}}" target="_blank">View LifeSync Dashboard</a>
+  <p>Click to view your dashboard with vital statistics and records.</p>
+</div>]]></template>
+    </sp_widget>
+</record_update>

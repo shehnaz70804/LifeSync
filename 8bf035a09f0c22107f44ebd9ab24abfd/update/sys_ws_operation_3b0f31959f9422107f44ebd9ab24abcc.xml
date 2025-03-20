@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>GET</http_method>
+        <name>getHospital</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    var hospitalId = request.queryParams.hospital_id;
+    if (!hospitalId) {
+        response.setStatus(400);
+        return { error: "Missing hospital_id parameter" };
+    }
+
+    var gr = new GlideRecord('x_1234_lifesync_hospitals');
+    gr.addQuery('hospital_id', hospitalId);
+    gr.query();
+
+    if (gr.next()) {
+        response.setStatus(200);
+        return {
+            hospital_id: gr.getValue('hospital_id'),
+            hospital_name: gr.getValue('hospital_name'),
+            hospital_type: gr.getValue('hospital_type'),
+            registration_number: gr.getValue('registration_number'),
+            address: gr.getValue('address'),
+            pincode: gr.getValue('pincode'),
+            contact_information: gr.getValue('contact_information')
+        };
+    } else {
+        response.setStatus(404);
+        return { error: "Hospital not found for ID: " + hospitalId };
+    }
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1234_lifesync/hospital_profile_api/getHospital</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/getHospital</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-14 13:34:00</sys_created_on>
+        <sys_id>3b0f31959f9422107f44ebd9ab24abcc</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>getHospital</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ws_operation_3b0f31959f9422107f44ebd9ab24abcc</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 13:34:00</sys_updated_on>
+        <web_service_definition display_value="HospitalProfileAPI">890e71559f9422107f44ebd9ab24ab69</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>3b0f31959f9422107f44ebd9ab24abcc</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-14 13:33:59</sys_created_on>
+        <sys_id>b23ffd559f9422107f44ebd9ab24ab2b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 13:33:59</sys_updated_on>
+        <table>sys_ws_operation</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

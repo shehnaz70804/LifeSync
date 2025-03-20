@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>GET</http_method>
+        <name>get_records</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    try {
+        var userId = gs.getUserID();
+        if (!userId) {
+            response.setStatus(401);
+            return { success: false, message: 'User not logged in.' };
+        }
+
+        // Get registered user_id from x_1234_lifesync_lifesync_register
+        var registerGr = new GlideRecord('x_1234_lifesync_lifesync_register');
+        registerGr.addQuery('u_sys_user', userId);
+        registerGr.query();
+        var registeredUserId = '';
+        if (registerGr.next()) {
+            registeredUserId = registerGr.getValue('user_id') || '';
+        } else {
+            response.setStatus(404);
+            return { success: false, message: 'No registered user ID found for sys_id: ' + userId };
+        }
+
+        // Fetch records
+        var records = [];
+        var gr = new GlideRecord('x_1234_lifesync_lifesync_records');
+        gr.addQuery('userid', registeredUserId);
+        gr.query();
+        
+        while (gr.next()) {
+            records.push({
+                document: gr.getValue('document') || '',
+                documenttype: gr.getValue('documenttype') || '',
+                hospital_name: gr.getValue('hospital_name') || '',
+                recordid: gr.getValue('recordid') || '',
+                summary: gr.getValue('summary') || '',
+                userid: gr.getValue('userid') || ''
+            });
+        }
+
+        response.setStatus(200);
+        return {
+            success: true,
+            records: records,
+            debug: {
+                sys_id: userId,
+                registered_user_id: registeredUserId
+            }
+        };
+    } catch (e) {
+        response.setStatus(500);
+        return { success: false, message: 'Error: ' + e.message };
+    }
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1234_lifesync/lifesync_records/records</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/records</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-09 17:23:21</sys_created_on>
+        <sys_id>4cb3c1379f0022107f44ebd9ab24ab02</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>get_records</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ws_operation_4cb3c1379f0022107f44ebd9ab24ab02</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-09 17:23:21</sys_updated_on>
+        <web_service_definition display_value="LifeSyncRecordsAPI">0a8305f39f0022107f44ebd9ab24ab4e</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>4cb3c1379f0022107f44ebd9ab24ab02</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-09 17:23:21</sys_created_on>
+        <sys_id>0ec305379f0022107f44ebd9ab24ab2b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-09 17:23:21</sys_updated_on>
+        <table>sys_ws_operation</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

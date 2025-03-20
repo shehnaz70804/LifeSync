@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_icon_section">
+    <sys_sg_icon_section action="INSERT_OR_UPDATE">
+        <access_control_type>user_roles</access_control_type>
+        <active>true</active>
+        <applets>c7d2f5249f0c22107f44ebd9ab24abed</applets>
+        <card_size/>
+        <column_count/>
+        <custom_height/>
+        <custom_width/>
+        <data_item/>
+        <display_feed_count>false</display_feed_count>
+        <hide_header>false</hide_header>
+        <hide_section_if_empty>false</hide_section_if_empty>
+        <is_custom_size>false</is_custom_size>
+        <is_hidden_preference_name/>
+        <orientation>horizontal</orientation>
+        <required_roles>x_1234_lifesync.user,x_1234_lifesync.hospital,x_1234_lifesync.admin</required_roles>
+        <row_count/>
+        <sys_class_name>sys_sg_icon_section</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-27 18:28:48</sys_created_on>
+        <sys_id>cbd239249f0c22107f44ebd9ab24ab02</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Request</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_sg_icon_section_cbd239249f0c22107f44ebd9ab24ab02</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-27 18:28:48</sys_updated_on>
+        <table/>
+        <title>Request</title>
+        <visible_condition/>
+        <wide_column_count/>
+    </sys_sg_icon_section>
+</record_update>

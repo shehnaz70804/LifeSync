@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_1234_lifesync.GeminiHealthTipGenerator</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>GeminiHealthTipGenerator</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var LifeSyncDocumentSummarizer = Class.create();
+LifeSyncDocumentSummarizer.prototype = {
+    initialize: function() {
+        this.apiKey = gs.getProperty('x_1234_lifesync.gemini_api_key');
+        this.endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+        gs.info('LifeSyncDocumentSummarizer initialized - API Key: ' + (this.apiKey ? '[present]' : '[missing]'));
+        if (!this.apiKey) {
+            gs.error('LifeSyncDocumentSummarizer: API key missing in x_1234_lifesync.gemini_api_key');
+        }
+    },
+
+    summarizeDocument: function(cloudinaryUrl, sysId) {
+        try {
+            gs.info('LifeSyncDocumentSummarizer: Summarizing document from ' + cloudinaryUrl);
+
+            // Fetch document content from Cloudinary URL
+            var rest = new sn_ws.RESTMessageV2();
+            rest.setEndpoint(cloudinaryUrl);
+            rest.setHttpMethod('GET');
+            var response = rest.execute();
+            var documentContent = response.getBody();
+
+            if (!documentContent) {
+                throw new Error('No content fetched from ' + cloudinaryUrl);
+            }
+
+            // Call Gemini API to summarize
+            var aiRest = new sn_ws.RESTMessageV2();
+            aiRest.setEndpoint(this.endpoint + '?key=' + this.apiKey);
+            aiRest.setHttpMethod('POST');
+            aiRest.setRequestHeader('Content-Type', 'application/json');
+
+            var prompt = "Summarize this document in 50 words or less, focusing on main points: " + documentContent;
+            var requestBody = {
+                "contents": [{
+                    "parts": [{
+                        "text": prompt
+                    }]
+                }],
+                "generationConfig": {
+                    "maxOutputTokens": 60, // ~50 words
+                    "temperature": 0.7
+                }
+            };
+            aiRest.setRequestBody(JSON.stringify(requestBody));
+
+            var aiResponse = aiRest.execute();
+            var aiHttpStatus = aiResponse.getStatusCode();
+            var aiResponseBody = aiResponse.getBody();
+            gs.info('LifeSyncDocumentSummarizer: Gemini Response - Status: ' + aiHttpStatus + ', Body: ' + aiResponseBody);
+
+            if (aiHttpStatus !== 200) {
+                throw new Error('Gemini API failed with status ' + aiHttpStatus + ': ' + aiResponseBody);
+            }
+
+            var jsonResponse = JSON.parse(aiResponseBody);
+            if (!jsonResponse || !jsonResponse.candidates || !jsonResponse.candidates[0].content || !jsonResponse.candidates[0].content.parts) {
+                throw new Error('Invalid Gemini response structure: ' + JSON.stringify(jsonResponse));
+            }
+
+            var summary = jsonResponse.candidates[0].content.parts[0].text.trim();
+            gs.info('LifeSyncDocumentSummarizer: Generated summary: ' + summary);
+
+            // Update the record in x_1234_lifesync_u_document_storage
+            var gr = new GlideRecord('x_1234_lifesync_u_document_storage');
+            if (gr.get(sysId)) {
+                gr.u_summary = summary;
+                gr.update();
+                gs.info('LifeSyncDocumentSummarizer: Updated sys_id ' + sysId + ' with summary: ' + summary);
+            } else {
+                throw new Error('Record not found for sys_id: ' + sysId);
+            }
+
+            return summary;
+        } catch (e) {
+            gs.error('LifeSyncDocumentSummarizer: Error summarizing document - ' + e.message);
+            var errorSummary = 'Error summarizing document.';
+            var gr = new GlideRecord('x_1234_lifesync_u_document_storage');
+            if (gr.get(sysId)) {
+                gr.u_summary = errorSummary;
+                gr.update();
+            }
+            return errorSummary;
+        }
+    },
+
+    type: 'LifeSyncDocumentSummarizer'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-12 17:36:11</sys_created_on>
+        <sys_id>351324789fd022107f44ebd9ab24abf8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>GeminiHealthTipGenerator</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_script_include_351324789fd022107f44ebd9ab24abf8</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-12 17:36:11</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>351324789fd022107f44ebd9ab24abf8</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-12 17:36:10</sys_created_on>
+        <sys_id>5b73a4789fd022107f44ebd9ab24abd4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-12 17:36:10</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

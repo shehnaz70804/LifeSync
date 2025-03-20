@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column">
+    <sp_column action="DELETE">
+        <class_name/>
+        <order>1</order>
+        <semantic_tag/>
+        <size>12</size>
+        <size_lg/>
+        <size_sm/>
+        <size_xs/>
+        <sp_row display_value="1">963f7dac9f1022107f44ebd9ab24ab9d</sp_row>
+        <sys_class_name>sp_column</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-12 05:38:29</sys_created_on>
+        <sys_id>123f71ec9f1022107f44ebd9ab24abda</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>1</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sp_column_123f71ec9f1022107f44ebd9ab24abda</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-12 05:38:29</sys_updated_on>
+    </sp_column>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</application>
+        <file_path/>
+        <instance_id>863b215cc3d31a10d7299dcd2b01313a</instance_id>
+        <instance_name>mav-jan-2515-0010</instance_name>
+        <name>sp_column_123f71ec9f1022107f44ebd9ab24abda</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_column"><sp_column action="INSERT_OR_UPDATE"><class_name/><order>1</order><semantic_tag/><size>12</size><size_lg/><size_sm/><size_xs/><sp_row display_value="1">963f7dac9f1022107f44ebd9ab24ab9d</sp_row><sys_class_name>sp_column</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-03-12 05:38:29</sys_created_on><sys_id>123f71ec9f1022107f44ebd9ab24abda</sys_id><sys_mod_count>0</sys_mod_count><sys_name>1</sys_name><sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package><sys_policy/><sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope><sys_update_name>sp_column_123f71ec9f1022107f44ebd9ab24abda</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-03-12 05:38:29</sys_updated_on></sp_column></record_update>]]></payload>
+        <payload_hash>-1741191701</payload_hash>
+        <record_name>1</record_name>
+        <reverted_from/>
+        <source>07f075a09f0c22107f44ebd9ab24ab02</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-12 05:38:29</sys_created_on>
+        <sys_id>523f71ec9f1022107f44ebd9ab24abdc</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19588dc8b540000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-12 05:38:29</sys_updated_on>
+        <type>Column</type>
+        <update_guid>563f71ecc810221060e9b1e866515ddb</update_guid>
+        <update_guid_history>563f71ecc810221060e9b1e866515ddb:-1741191701</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="1">73bf35ec9f1022107f44ebd9ab24ab2e</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-12 05:40:47</sys_created_on>
+        <sys_db_object display_value="" name="sp_column">sp_column</sys_db_object>
+        <sys_id>c7ac4dadbda6425a9938a7fa9a8f5ee9</sys_id>
+        <sys_metadata>123f71ec9f1022107f44ebd9ab24abda</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>1</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_scope_delete display_value="">2ca23217b0054b7689152463f93a81b9</sys_scope_delete>
+        <sys_update_name>sp_column_123f71ec9f1022107f44ebd9ab24abda</sys_update_name>
+        <sys_update_version display_value="sp_column_123f71ec9f1022107f44ebd9ab24abda">523f71ec9f1022107f44ebd9ab24abdc</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-12 05:40:47</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

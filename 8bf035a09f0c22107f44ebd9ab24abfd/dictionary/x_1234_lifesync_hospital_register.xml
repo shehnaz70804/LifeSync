@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="76b0397d9f4822107f44ebd9ab24abce" label="Hospital Register" max_length="40" name="x_1234_lifesync_hospital_register" type="collection">
+        <element label="Hospital ID" max_length="50" name="hospital_id" type="string" unique="true"/>
+        <element label="Address" max_length="255" name="address" type="string"/>
+        <element label="Hospital Name" max_length="50" name="hospital_name" type="string"/>
+        <element label="Registration Number" max_length="40" name="registration_number" type="string"/>
+        <element label="Contact Information" max_length="100" name="contact_information" type="string"/>
+        <element label="Password" max_length="40" name="password" type="string"/>
+        <element choice="1" label="Hospital Type" max_length="40" name="hospital_type" type="choice">
+            <choice/>
+        </element>
+        <element label="Pincode" max_length="10" name="pincode" type="string"/>
+    </element>
+</database>

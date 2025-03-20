@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>sys_attachment</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition table="sys_attachment">table_name=x_1234_lifesync_lifesync_records^EQ<item endquery="false" field="table_name" goto="false" newquery="false" operator="=" or="false" value="x_1234_lifesync_lifesync_records"/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </filter_condition>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>CreateLifeSyncRecordOnAttachment</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+    try {
+        // Get user ID from session or attachment context
+        var userId = gs.getUserID(); // Default to current user
+        gs.info('CreateLifeSyncRecordOnAttachment: User ID - ' + userId);
+
+        // Create record in x_1234_lifesync_lifesync_records
+        var recordGr = new GlideRecord('x_1234_lifesync_lifesync_records');
+        if (recordGr.isValid()) {
+            recordGr.initialize();
+            recordGr.setValue('userid', userId);
+            var recordId = recordGr.insert();
+            if (recordId) {
+                gs.info('CreateLifeSyncRecordOnAttachment: Record created - ID: ' + recordId);
+
+                // Link attachment to the record
+                current.setValue('table_sys_id', recordId);
+                current.setValue('table_name', 'x_1234_lifesync_lifesync_records');
+                current.update();
+            } else {
+                throw new Error('Failed to create record');
+            }
+        } else {
+            throw new Error('Table x_1234_lifesync_lifesync_records is not valid');
+        }
+    } catch (e) {
+        gs.error('CreateLifeSyncRecordOnAttachment: Error - ' + e.message);
+    }
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-02 19:02:00</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>acc65d299f4c22107f44ebd9ab24ab39</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>CreateLifeSyncRecordOnAttachment</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_script_acc65d299f4c22107f44ebd9ab24ab39</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-02 19:02:00</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=acc65d299f4c22107f44ebd9ab24ab39"/>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>acc65d299f4c22107f44ebd9ab24ab39</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-02 19:02:00</sys_created_on>
+        <sys_id>b2371d299f4c22107f44ebd9ab24abbd</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-02 19:02:00</sys_updated_on>
+        <table>sys_script</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

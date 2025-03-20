@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[addLoadEvent(function() {
+    var token = document.getElementById('g_ck').value;
+    console.log('Session Token: ' + token);
+    if (!token) {
+        console.error('No session token found!');
+        document.getElementById('healthTip').innerText = "Error: No session token.";
+        return;
+    }
+
+    console.log('Fetching tip from /api/x_1234_lifesync/health_tip/tip');
+    fetch('/api/x_1234_lifesync/health_tip/tip', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-UserToken': token
+        }
+    })
+    .then(response => {
+        console.log('API Response Status: ' + response.status);
+        if (!response.ok) {
+            throw new Error('HTTP Error: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('API Response Data: ' + JSON.stringify(data));
+        if (data.result && data.result.success && data.result.tip) {
+            document.getElementById('healthTip').innerText = data.result.tip;
+        } else {
+            document.getElementById('healthTip').innerText = "Failed to load tip: " + (data.result && data.result.error ? data.result.error : 'No tip returned');
+        }
+    }).catch(error => {
+        console.error('Fetch Error: ' + error.message);
+        document.getElementById('healthTip').innerText = "Error loading tip: " + error.message;
+    });
+
+    // Fetch and render health data from u_document_storage
+    fetchHealthData();
+});
+
+function fetchHealthData() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/api/now/table/u_document_storage?sysparm_query=sys_created_by=' + gs.getUserName(), true);
+    xhr.setRequestHeader('X-UserToken', document.getElementById('g_ck').value);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            var bpData = [];
+            var hrData = [];
+            response.result.forEach(function(record) {
+                var summary = record.summary || '';
+                var date = record.sys_created_on.split(' ')[0]; // Use creation date as fallback
+
+                // Extract BP (e.g., "BP 140/90 mmHg")
+                var bpMatch = summary.match(/BP\s*(\d+\/\d+)\s*mmHg/i);
+                if (bpMatch) {
+                    bpData.push({ date: date, value: bpMatch[1] + ' mmHg' });
+                }
+
+                // Extract HR (e.g., "HR 78 bpm")
+                var hrMatch = summary.match(/HR\s*(\d+)\s*bpm/i);
+                if (hrMatch) {
+                    hrData.push({ date: date, value: hrMatch[1] + ' bpm' });
+                }
+            });
+            renderGraphs(bpData, hrData);
+        } else {
+            console.error('Failed to fetch records:', xhr.status);
+        }
+    };
+    xhr.send();
+}
+
+function renderGraphs(bpData, hrData) {
+    var bpCtx = document.getElementById('bpChart').getContext('2d');
+    new Chart(bpCtx, {
+        type: 'line',
+        data: {
+            labels: bpData.map(function(d) { return d.date; }),
+            datasets: [
+                {
+                    label: 'Systolic BP',
+                    data: bpData.map(function(d) { return d.value.split('/')[0]; }),
+                    borderColor: '#2a6a6e',
+                    backgroundColor: 'rgba(42, 106, 110, 0.1)',
+                    fill: false,
+                    tension: 0.4
+                },
+                {
+                    label: 'Diastolic BP',
+                    data: bpData.map(function(d) { return d.value.split('/')[1].replace(' mmHg', ''); }),
+                    borderColor: '#5d8294',
+                    backgroundColor: 'rgba(93, 130, 148, 0.1)',
+                    fill: false,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: false, title: { display: true, text: 'mmHg' } },
+                x: { title: { display: true, text: 'Date' } }
+            },
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: { mode: 'index', intersect: false }
+            }
+        }
+    });
+
+    var hrCtx = document.getElementById('hrChart').getContext('2d');
+    new Chart(hrCtx, {
+        type: 'line',
+        data: {
+            labels: hrData.map(function(d) { return d.date; }),
+            datasets: [
+                {
+                    label: 'Heart Rate',
+                    data: hrData.map(function(d) { return d.value.replace(' bpm', ''); }),
+                    borderColor: '#5d8294',
+                    backgroundColor: 'rgba(93, 130, 148, 0.1)',
+                    fill: false,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: false, title: { display: true, text: 'bpm' } },
+                x: { title: { display: true, text: 'Date' } }
+            },
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: { mode: 'index', intersect: false }
+            }
+        }
+    });
+}]]></client_script>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_1234_lifesync_home.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #d8e1e5, #e8ecef); /* Soft gray gradient */
+            margin: 0;
+            padding: 0;
+            color: #495057; /* Charcoal gray for text */
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 20px auto;
+            padding: 0;
+        }
+        /* Header with Profile */
+        header {
+            background: linear-gradient(90deg, #2a6a6e, #4d9999); /* Deep teal gradient */
+            color: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+        header .container {
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+        }
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid #fff;
+            transition: transform 0.2s ease;
+        }
+        .profile img:hover {
+            transform: scale(1.1);
+        }
+        .profile span {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            min-width: 120px;
+            z-index: 1000;
+        }
+        .dropdown a {
+            display: block;
+            padding: 10px 15px;
+            color: #495057;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+        .dropdown a:hover {
+            background-color: #f2f2f2;
+            color: #2a6a6e;
+        }
+        /* Section Styling */
+        .section {
+            background-color: #e8ecef; /* Soft gray */
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .section h2 {
+            color: #495057; /* Charcoal gray */
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            border-bottom: 2px solid #5d8294; /* Slate blue accent */
+            padding-bottom: 5px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        /* Daily Health Tip */
+        .health-tip {
+            background-color: #b0d4d6; /* Light teal */
+            text-align: center;
+        }
+        .health-tip p {
+            font-size: 18px;
+            font-style: italic;
+            color: #2a6a6e; /* Deep teal */
+            margin: 10px 0;
+        }
+        /* Checkups and Pill Reminders Row */
+        .checkups-reminders {
+            display: flex;
+            gap: 20px;
+        }
+        .checkups, .reminders {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 6px;
+            padding: 10px;
+        }
+        .checkups ul, .reminders ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .checkups li, .reminders li {
+            padding: 10px;
+            border-bottom: 1px solid #ced4da; /* Light gray border */
+            color: #495057;
+        }
+        .checkups li:last-child, .reminders li:last-child {
+            border-bottom: none;
+        }
+        /* Tracking Graphs */
+        .tracking {
+            display: flex;
+            gap: 20px;
+        }
+        .graph {
+            flex: 1;
+            height: 200px;
+            background-color: #d8e1e5; /* Slightly darker gray */
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        .graph-title {
+            font-size: 14px;
+            color: #495057;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        /* Records Section */
+        .records {
+            text-align: center;
+            cursor: pointer;
+        }
+        .records:hover {
+            background-color: #b0d4d6; /* Light teal hover */
+        }
+        .records p {
+            font-size: 16px;
+            color: #2a6a6e; /* Deep teal */
+            margin: 10px 0;
+        }
+        .records img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            transition: opacity 0.3s ease;
+        }
+        .records:hover img {
+            opacity: 0.9;
+        }
+        /* Nav Button */
+        .nav-button {
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #2a6a6e, #4d9999); /* Deep teal gradient */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .nav-button:hover {
+            background: linear-gradient(45deg, #245c5f, #438989); /* Darker teal */
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                margin: 10px auto;
+            }
+            header {
+                padding: 10px 15px;
+            }
+            header .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .profile {
+                margin-top: 10px;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            header h1 {
+                font-size: 24px;
+            }
+            .section h2 {
+                font-size: 20px;
+            }
+            .checkups-reminders, .tracking {
+                flex-direction: column;
+            }
+            .section {
+                padding: 15px;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            header h1 {
+                font-size: 20px;
+            }
+            .profile img {
+                width: 32px;
+                height: 32px;
+            }
+            .profile span {
+                font-size: 14px;
+            }
+            .section {
+                padding: 15px;
+            }
+            .section h2 {
+                font-size: 18px;
+            }
+            .health-tip p {
+                font-size: 16px;
+            }
+            .records p {
+                font-size: 14px;
+            }
+            .checkups li, .reminders li {
+                padding: 8px;
+                font-size: 14px;
+            }
+            .graph {
+                height: 150px;
+            }
+            .graph-title {
+                font-size: 12px;
+            }
+        }
+    </style>
+
+    <g:evaluate var="loggedInName" jelly="true">
+        var name = gs.getParameter('name') || gs.getUserDisplayName();
+        name;
+    </g:evaluate>
+    <g:evaluate var="userId" jelly="true">
+        var uid = gs.getParameter('user_id') || gs.getUserID();
+        uid;
+    </g:evaluate>
+
+    <input type="hidden" id="g_ck" value="$[gs.getSession().getSessionToken()]"/>
+    <header>
+        <div class="container">
+            <h1>LifeSync</h1>
+            <div class="profile" onclick="toggleDropdown(event)">
+                <img src="https://via.placeholder.com/40" alt="Profile Picture" />
+                <span>${loggedInName}</span>
+                <div class="dropdown" id="profileDropdown">
+                    <a href="x_1234_lifesync_logout.do">Logout</a>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function toggleDropdown(event) {
+                var dropdown = document.getElementById('profileDropdown');
+                dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+                event.stopPropagation(); // Prevent click from bubbling up
+            }
+
+            // Close dropdown if clicking outside
+            document.addEventListener('click', function(event) {
+                var dropdown = document.getElementById('profileDropdown');
+                var profile = document.querySelector('.profile');
+                if (!profile.contains(event.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        </script>
+    </header>
+
+    <div class="container">
+        <!-- Daily Health Tip Section -->
+        <div class="section health-tip">
+            <h2>Daily Health Tip</h2>
+            <p id="healthTip">Loading tip...</p>
+        </div>
+
+        <!-- Checkups and Pill Reminders Row -->
+        <div class="section checkups-reminders">
+            <div class="checkups">
+                <h2>Upcoming Checkups</h2>
+                <ul>
+                    <li>General Checkup - Mar 5, 2025, 10:00 AM</li>
+                    <li>Dental Visit - Mar 10, 2025, 2:00 PM</li>
+                </ul>
+            </div>
+            <div class="reminders">
+                <h2>Pill Reminders</h2>
+                <ul>
+                    <li>Vitamin D - 8:00 AM</li>
+                    <li>Blood Pressure Med - 6:00 PM</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tracking Graphs Row -->
+        <div class="section tracking">
+            <div class="graph bp-graph">
+                <div class="graph-title">Blood Pressure (mmHg)</div>
+                <canvas id="bpChart"></canvas>
+            </div>
+            <div class="graph hr-graph">
+                <div class="graph-title">Heart Rate (bpm)</div>
+                <canvas id="hrChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Explore More Section -->
+        <div class="section">
+            <h2>Records</h2>
+            <button class="nav-button" onclick="window.location.href='/LifeSync'">Go to Records</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Blood Pressure Chart
+        var bpCtx = document.getElementById('bpChart').getContext('2d');
+        var bpChart = new Chart(bpCtx, {
+            type: 'line',
+            data: {
+                labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+                datasets: [{
+                    label: 'Systolic BP (mmHg)',
+                    data: [120, 122, 118, 125, 123, 120, 119],
+                    borderColor: '#2a6a6e', // Deep teal
+                    backgroundColor: 'rgba(42, 106, 110, 0.1)', // Light teal fill
+                    borderWidth: 2,
+                    tension: 0.3, // Smooth curve
+                    pointRadius: 3,
+                    pointBackgroundColor: '#2a6a6e'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 100,
+                        max: 140,
+                        title: {
+                            display: true,
+                            text: 'mmHg',
+                            color: '#495057'
+                        },
+                        grid: {
+                            color: '#ced4da' // Light gray grid
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Days',
+                            color: '#495057'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // Hide legend for simplicity
+                    }
+                }
+            }
+        });
+
+        // Heart Rate Chart
+        var hrCtx = document.getElementById('hrChart').getContext('2d');
+        var hrChart = new Chart(hrCtx, {
+            type: 'line',
+            data: {
+                labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+                datasets: [{
+                    label: 'Heart Rate (bpm)',
+                    data: [72, 75, 70, 78, 74, 73, 71],
+                    borderColor: '#5d8294', // Slate blue
+                    backgroundColor: 'rgba(93, 130, 148, 0.1)', // Light slate fill
+                    borderWidth: 2,
+                    tension: 0.3, // Smooth curve
+                    pointRadius: 3,
+                    pointBackgroundColor: '#5d8294'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 60,
+                        max: 90,
+                        title: {
+                            display: true,
+                            text: 'bpm',
+                            color: '#495057'
+                        },
+                        grid: {
+                            color: '#ced4da' // Light gray grid
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Days',
+                            color: '#495057'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // Hide legend for simplicity
+                    }
+                }
+            }
+        });
+    </script>
+</j:jelly>]]></html>
+        <name>home</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 06:02:03</sys_created_on>
+        <sys_id>9e0b59059f4022107f44ebd9ab24ab81</sys_id>
+        <sys_mod_count>69</sys_mod_count>
+        <sys_name>home</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ui_page_9e0b59059f4022107f44ebd9ab24ab81</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 19:34:40</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>9e0b59059f4022107f44ebd9ab24ab81</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 06:02:02</sys_created_on>
+        <sys_id>3b1b55059f4022107f44ebd9ab24ab0d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-01 06:02:02</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

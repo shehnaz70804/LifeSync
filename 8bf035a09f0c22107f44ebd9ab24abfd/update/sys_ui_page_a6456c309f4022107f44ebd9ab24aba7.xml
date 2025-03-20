@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[function loginUser() {
+    console.log('loginUser() called');
+    var type = document.getElementById('type').value;
+    var id = document.getElementById('id').value;
+    var password = document.getElementById('password').value;
+    var token = document.getElementById('g_ck').value;
+
+    console.log('Login Data: Type: ' + type + ', ID: ' + id + ', Password: ' + password);
+    console.log('Session Token: ' + token);
+
+    if (!id || !password) {
+        console.log('Validation failed: Missing fields');
+        alert('Please fill in all fields.');
+        return false;
+    }
+
+    var endpoint = (type === 'User') ? '/api/x_1234_lifesync/login/loginUser' : '/api/x_1234_lifesync/login/loginHospital';
+    var requestBody = { id: id, password: password };
+
+    console.log('Sending login request to ' + endpoint);
+    console.log('Request Body: ' + JSON.stringify(requestBody));
+
+    fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-UserToken': token
+        },
+        body: JSON.stringify(requestBody)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Raw Response Data: ' + JSON.stringify(data));
+
+        if (data.result && data.result.success) { // Fix: Checking inside "result"
+            var redirectUrl = (type === 'User') 
+                ? 'x_1234_lifesync_home.do?user_id=' + encodeURIComponent(data.result.id)
+                : 'x_1234_lifesync_hospital_home.do?hospital_id=' + encodeURIComponent(data.result.id);
+            console.log('Redirecting to: ' + redirectUrl);
+            window.location.href = redirectUrl;
+        } else {
+            console.log('Login failed with response: ' + JSON.stringify(data));
+            alert(data.result.error || 'Login failed: Unknown error');
+        }
+    })
+    .catch(error => {
+        console.error('Fetch Error: ' + error.message);
+        alert('Error during login: ' + error.message);
+    });
+
+    return false;
+}]]></client_script>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_1234_lifesync_login.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #d8e1e5, #e8ecef); /* Matches lifesync_home */
+            margin: 0;
+            padding: 20px;
+            color: #495057; /* Charcoal gray */
+            min-height: 100vh;
+        }
+        #loginForm {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #e8ecef; /* Soft gray */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+            border-top: 4px solid #5d8294; /* Slate blue */
+        }
+        h1 {
+            color: #495057; /* Charcoal gray */
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            background: linear-gradient(90deg, #2a6a6e, #4d9999); /* Deep teal gradient */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        label {
+            display: block;
+            color: #495057; /* Matches body text */
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da; /* Light gray border */
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            background-color: #fff;
+            box-shadow: none;
+        }
+        input[type="submit"] {
+            background: linear-gradient(45deg, #2a6a6e, #4d9999); /* Matches button */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background: linear-gradient(45deg, #245c5f, #438989); /* Darker teal */
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .register-link a {
+            color: #2a6a6e; /* Deep teal from gradient */
+            text-decoration: none;
+        }
+        .register-link a:hover {
+            color: #245c5f; /* Darker teal */
+            text-decoration: underline;
+        }
+    </style>
+
+    <h1>Login to LifeSync</h1>
+    <input type="hidden" id="g_ck" value="$[gs.getSession().getSessionToken()]"/>
+    <form id="loginForm" onsubmit="return loginUser();">
+        <p>
+            <label for="type">User Type</label>
+            <select id="type" name="type" required="true">
+                <option value="User">User</option>
+                <option value="Hospital">Hospital</option>
+            </select>
+        </p>
+        <p>
+            <label for="id">ID (User ID or Hospital ID)</label>
+            <input type="text" id="id" name="id" required="true"/>
+        </p>
+        <p>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required="true"/>
+        </p>
+        <p><input type="submit" value="Login"/></p>
+        <p class="register-link"><a href="x_1234_lifesync_register.do">Not registered? Sign up here</a></p>
+    </form>
+</j:jelly>]]></html>
+        <name>login</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-28 07:37:59</sys_created_on>
+        <sys_id>a6456c309f4022107f44ebd9ab24aba7</sys_id>
+        <sys_mod_count>48</sys_mod_count>
+        <sys_name>login</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ui_page_a6456c309f4022107f44ebd9ab24aba7</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 13:33:53</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>a6456c309f4022107f44ebd9ab24aba7</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-28 07:37:59</sys_created_on>
+        <sys_id>67776cf09f4022107f44ebd9ab24abad</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-28 07:37:59</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

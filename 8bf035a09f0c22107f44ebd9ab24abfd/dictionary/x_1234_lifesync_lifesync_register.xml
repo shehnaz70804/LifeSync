@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="59166a3c9f8822107f44ebd9ab24ab70" label="LifeSync_Register" max_length="40" name="x_1234_lifesync_lifesync_register" type="collection">
+        <element choice="1" label="Type" max_length="40" name="type" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="User" value="user"/>
+                <element inactive_on_update="false" label="Hospital" value="hospital"/>
+            </choice>
+        </element>
+        <element label="Date of Birth" max_length="40" name="date_of_birth" type="glide_date"/>
+        <element display="true" label="User id" max_length="40" name="user_id" type="integer" unique="true"/>
+        <element label="Pincode" max_length="40" name="pincode" type="integer"/>
+        <element label="Gender" max_length="40" name="gender" type="string"/>
+        <element label="password" max_length="40" name="password" type="integer"/>
+        <element label="Phone Number" max_length="40" name="phone_number" type="integer"/>
+        <element label="Name" max_length="40" name="name" type="string"/>
+        <element label="Address" max_length="40" name="address" type="string"/>
+        <index name="index" unique="true">
+            <element name="user_id"/>
+        </index>
+    </element>
+</database>

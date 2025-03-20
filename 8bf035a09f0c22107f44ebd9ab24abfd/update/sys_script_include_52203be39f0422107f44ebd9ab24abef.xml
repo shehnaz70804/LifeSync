@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_1234_lifesync.HospitalRequestHandler</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>HospitalRequestHandler</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var HospitalRequestHandler = Class.create();
+HospitalRequestHandler.prototype = {
+    initialize: function() {},
+
+    createRequest: function() {
+        var hospitalId = this.getParameter('sysparm_hospital_id');
+        var userId = this.getParameter('sysparm_user_id');
+        var description = this.getParameter('sysparm_description');
+
+        gs.log('HospitalRequestHandler: Creating request - Hospital ID: ' + hospitalId + ', User ID: ' + userId + ', Description: ' + description);
+
+        var gr = new GlideRecord('x_1234_lifesync_hospital_requests');
+        gr.initialize();
+        gr.hospital_id = hospitalId;
+        gr.user_id = userId;
+        gr.description = description;
+        gr.status = 'Pending'; // Default status
+        gr.requested_date = new GlideDateTime();
+        var requestId = gr.insert();
+
+        if (requestId) {
+            gs.log('HospitalRequestHandler: Request created with ID: ' + requestId);
+            return JSON.stringify({ success: true });
+        }
+        gs.log('HospitalRequestHandler: Failed to create request');
+        return JSON.stringify({ success: false, error: 'Failed to create request' });
+    },
+
+    type: 'HospitalRequestHandler'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-09 11:18:28</sys_created_on>
+        <sys_id>52203be39f0422107f44ebd9ab24abef</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>HospitalRequestHandler</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_script_include_52203be39f0422107f44ebd9ab24abef</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-09 11:22:22</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>52203be39f0422107f44ebd9ab24abef</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-09 11:18:28</sys_created_on>
+        <sys_id>8140fbe39f0422107f44ebd9ab24ab54</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-09 11:18:28</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

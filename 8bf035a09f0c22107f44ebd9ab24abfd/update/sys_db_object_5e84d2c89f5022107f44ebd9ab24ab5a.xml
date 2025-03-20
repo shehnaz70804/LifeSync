@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_object">
+    <sys_db_object action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <actions_access>true</actions_access>
+        <alter_access>true</alter_access>
+        <caller_access/>
+        <client_scripts_access>true</client_scripts_access>
+        <configuration_access>true</configuration_access>
+        <create_access>true</create_access>
+        <create_access_controls>true</create_access_controls>
+        <delete_access>true</delete_access>
+        <is_extendable>false</is_extendable>
+        <label>u_document_storage</label>
+        <live_feed_enabled>false</live_feed_enabled>
+        <name>x_1234_lifesync_u_document_storage</name>
+        <number_ref/>
+        <provider_class/>
+        <read_access>true</read_access>
+        <scriptable_table>false</scriptable_table>
+        <super_class/>
+        <sys_class_name>sys_db_object</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-10 17:57:04</sys_created_on>
+        <sys_id>5e84d2c89f5022107f44ebd9ab24ab5a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>u_document_storage</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_db_object_5e84d2c89f5022107f44ebd9ab24ab5a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-10 17:57:04</sys_updated_on>
+        <update_access>true</update_access>
+        <user_role display_value="x_1234_lifesync.u_document_storage_user" name="x_1234_lifesync.u_document_storage_user">21159e889f5022107f44ebd9ab24abfc</user_role>
+        <ws_access>true</ws_access>
+    </sys_db_object>
+</record_update>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_1234_lifesync.GeminiHealthTipGenerator</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>GeminiHealthTipGenerator</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var GeminiHealthTipGenerator = Class.create();
+GeminiHealthTipGenerator.prototype = {
+    initialize: function() {
+        this.apiKey = gs.getProperty('x_1234_lifesync.gemini_api_key');
+        this.endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+        gs.info('GeminiHealthTipGenerator initialized - API Key: ' + (this.apiKey ? '[present]' : '[missing]'));
+        if (!this.apiKey) {
+            throw new Error('API key missing in System Properties (x_1234_lifesync.gemini_api_key)');
+        }
+    },
+
+    getDailyHealthTip: function() {
+        try {
+            gs.info('GeminiHealthTipGenerator: Fetching daily health tip');
+            var date = new Date().toISOString().split('T')[0]; // Unique date seed
+            var prompt = "Generate a concise, unique daily health tip (max 20 words) for " + date + ". Avoid repetition.";
+            var tip = this._callGemini(prompt);
+            if (!tip) {
+                throw new Error('No tip returned from Gemini API');
+            }
+            gs.info('GeminiHealthTipGenerator: Tip received: ' + tip);
+            return tip;
+        } catch (e) {
+            gs.error('GeminiHealthTipGenerator: Error - ' + e.message);
+            return "Drink water to stay hydrated today."; // New fallback
+        }
+    },
+
+    _callGemini: function(prompt) {
+        try {
+            gs.info('GeminiHealthTipGenerator: Calling Gemini API with prompt: ' + prompt);
+            var rest = new sn_ws.RESTMessageV2();
+            rest.setEndpoint(this.endpoint + '?key=' + this.apiKey);
+            rest.setHttpMethod('POST');
+            rest.setRequestHeader('Content-Type', 'application/json');
+
+            var requestBody = {
+                "contents": [{
+                    "parts": [{
+                        "text": prompt
+                    }]
+                }],
+                "generationConfig": {
+                    "maxOutputTokens": 30,
+                    "temperature": 1.0 // Max creativity
+                }
+            };
+            rest.setRequestBody(JSON.stringify(requestBody));
+            gs.info('GeminiHealthTipGenerator: Request: ' + JSON.stringify(requestBody));
+
+            var response = rest.execute();
+            var httpStatus = response.getStatusCode();
+            var responseBody = response.getBody();
+            gs.info('GeminiHealthTipGenerator: Status: ' + httpStatus + ', Body: ' + responseBody);
+
+            if (httpStatus !== 200) {
+                throw new Error('API failed - Status: ' + httpStatus + ', Body: ' + responseBody);
+            }
+
+            var jsonResponse = JSON.parse(responseBody);
+            if (!jsonResponse.candidates || !jsonResponse.candidates[0].content || !jsonResponse.candidates[0].content.parts) {
+                throw new Error('Invalid response: ' + responseBody);
+            }
+
+            var tip = jsonResponse.candidates[0].content.parts[0].text.trim();
+            return tip;
+        } catch (e) {
+            gs.error('GeminiHealthTipGenerator: _callGemini failed - ' + e.message);
+            throw e;
+        }
+    },
+
+    type: 'GeminiHealthTipGenerator'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 11:01:01</sys_created_on>
+        <sys_id>6b5f9a8d9f8422107f44ebd9ab24ab22</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>GeminiHealthTipGenerator</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_script_include_6b5f9a8d9f8422107f44ebd9ab24ab22</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-12 16:51:05</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>6b5f9a8d9f8422107f44ebd9ab24ab22</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-01 11:01:01</sys_created_on>
+        <sys_id>ab8f9a8d9f8422107f44ebd9ab24ab26</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-01 11:01:01</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

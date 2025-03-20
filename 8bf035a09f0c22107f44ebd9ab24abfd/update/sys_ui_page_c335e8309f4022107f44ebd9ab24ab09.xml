@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[function submitRegistration() {
+    var form = document.getElementById('registrationForm');
+    var type = document.getElementById('userType').value; // Get value from <select>
+    var token = document.getElementById('g_ck').value;
+    var data = {
+        type: type,
+        u_sys_user: typeof g_user !== 'undefined' ? g_user.userID : '' // Keep for context
+    };
+
+    // Define API URL based on type
+    var apiUrl = type === 'User' ? '/api/x_1234_lifesync/register_user/register' : '/api/x_1234_lifesync/registerhospitalapi/register';
+
+    // Collect data based on selected type
+    if (type === 'User') {
+        data.username = document.getElementById('username').value.trim() || '';
+        data.user_id = document.getElementById('user_id').value.trim() || '';
+        data.address = document.getElementById('address').value.trim() || '';
+        data.date_of_birth = document.getElementById('date_of_birth').value || '';
+        data.gender = form.querySelector('input[name="gender"]:checked') ? form.querySelector('input[name="gender"]:checked').value : '';
+        data.password = document.getElementById('password').value.trim() || '';
+        data.phone_number = document.getElementById('phone_number').value.trim() || '';
+        data.pincode = document.getElementById('pincode').value.trim() || '';
+
+        // Basic validation
+        if (!data.username || !data.user_id || !data.address || !data.date_of_birth || !data.gender || 
+            !data.password || !data.phone_number || !data.pincode) {
+            alert('Please fill in all required user fields.');
+            return false;
+        }
+    } else if (type === 'Hospital') {
+        data.hospital_type = document.getElementById('hospital_type').value || '';
+        data.registration_number = document.getElementById('registration_number').value.trim() || '';
+        data.address = document.getElementById('hospital_address').value.trim() || '';
+        data.pincode = document.getElementById('hospital_pincode').value.trim() || '';
+        data.hospital_name = document.getElementById('hospital_name').value.trim() || '';
+        data.hospital_id = document.getElementById('hospital_id').value.trim() || '';
+        data.password = document.getElementById('hospital_password').value.trim() || '';
+        data.contact_information = document.getElementById('contact_information').value.trim() || '';
+
+        // Basic validation
+        if (!data.hospital_type || !data.registration_number || !data.address || !data.pincode || 
+            !data.hospital_name || !data.hospital_id || !data.password || !data.contact_information) {
+            alert('Please fill in all required hospital fields.');
+            return false;
+        }
+    }
+
+    console.log(']]>📤<![CDATA[ Sending request to:', apiUrl);
+    console.log(']]>📌<![CDATA[ Headers:', {
+        'Content-Type': 'application/json',
+        'X-UserToken': token
+    });
+    console.log(']]>📊<![CDATA[ Body:', JSON.stringify(data, null, 2));
+    console.log(']]>🔑<![CDATA[ Token:', token);
+
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-UserToken': token
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        console.log(']]>🔍<![CDATA[ Response Status:', response.status);
+        return response.json().then(body => ({ status: response.status, body }));
+    })
+    .then(({ status, body }) => {
+        console.log("]]>📩<![CDATA[ API Response:", JSON.stringify(body, null, 2));
+
+        if (body.result && body.result.success === true) {  
+            alert('✅ Registration successful! Record ID: ' + (body.result.recordId || 'N/A'));
+            window.location.href = 'x_1234_lifesync_login.do';
+        } else if (body.error && body.error.message) {
+            alert('❌ Registration failed: ' + body.error.message);
+        } else {
+            alert('❌ Registration failed: Unexpected response from server.');
+        }
+    })
+    .catch(error => {
+        console.error(']]>🚨<![CDATA[ Fetch error:', error);
+        alert('❌ Error: ' + error.message);
+    });
+
+    return false; // Prevent default form submission
+}
+
+function toggleFields() {
+    var userFields = document.getElementById('userFields');
+    var hospitalFields = document.getElementById('hospitalFields');
+    var userType = document.getElementById('userType').value;
+
+    if (userType === 'User') {
+        userFields.style.display = 'block';
+        hospitalFields.style.display = 'none';
+    } else if (userType === 'Hospital') {
+        userFields.style.display = 'none';
+        hospitalFields.style.display = 'block';
+    }
+
+    var userInputs = userFields.querySelectorAll('input, textarea, select');
+    var hospitalInputs = hospitalFields.querySelectorAll('input, textarea, select');
+    userInputs.forEach(input => input.required = (userType === 'User'));
+    hospitalInputs.forEach(input => input.required = (userType === 'Hospital'));
+}
+
+toggleFields();]]></client_script>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_1234_lifesync_register.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #d8e1e5, #e8ecef);
+            margin: 0;
+            padding: 20px;
+            color: #495057;
+            min-height: 100vh;
+        }
+        #registrationForm {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #e8ecef;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid #5d8294;
+        }
+        h1 {
+            color: #495057;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            background: linear-gradient(90deg, #2a6a6e, #4d9999);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        p {
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            color: #495057;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="password"], input[type="tel"], input[type="date"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            background-color: #fff;
+            box-shadow: none;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus, input[type="password"]:focus, input[type="tel"]:focus, input[type="date"]:focus, textarea:focus, select:focus {
+            border-color: #5d8294;
+            outline: none;
+        }
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+        .radio-group label {
+            display: inline;
+            font-weight: normal;
+            margin-right: 15px;
+            color: #495057;
+        }
+        input[type="submit"] {
+            background: linear-gradient(45deg, #2a6a6e, #4d9999);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        input[type="submit"]:hover {
+            background: linear-gradient(45deg, #245c5f, #438989);
+            transform: scale(1.05);
+        }
+        .user-fields, .hospital-fields {
+            display: none;
+        }
+        .type-selection {
+            margin-bottom: 20px;
+        }
+		.login-link {
+			text-align: center;
+			margin-top: 15px;
+		}
+		.login-link a {
+			color: #2a6a6e; /* Deep teal from gradient */
+			text-decoration: none;
+		}
+		.login-link a:hover {
+			color: #245c5f; /* Darker teal */
+			text-decoration: underline;
+		}
+        @media (max-width: 480px) {
+            #registrationForm {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            label {
+                font-size: 14px;
+            }
+            input[type="text"], input[type="password"], input[type="tel"], input[type="date"], textarea, select {
+                font-size: 12px;
+            }
+            input[type="submit"] {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+            .radio-group label {
+                font-size: 14px;
+                margin-right: 10px;
+            }
+        }
+    </style>
+
+    <h1>LifeSync Registration</h1>
+    <input type="hidden" id="g_ck" value="$[gs.getSession().getSessionToken()]"/>
+    <form id="registrationForm" onsubmit="return submitRegistration();">
+        <div class="type-selection">
+            <!-- <p><label>User Type</label>
+                <input type="radio" id="userType" name="type" value="User" checked="checked" onchange="toggleFields()" /> <label for="userType">User</label>
+                <input type="radio" id="hospitalType" name="type" value="Hospital" onchange="toggleFields()" /> <label for="hospitalType">Hospital</label>
+            </p> -->
+			<p>
+        <label for="userType">User Type</label>
+        <select id="userType" name="type" onchange="toggleFields()" required="true">
+            <option value="User" selected="selected">User</option>
+            <option value="Hospital">Hospital</option>
+        </select>
+    </p>
+			<!-- <p><label>User Type</label>
+                <input type="radio" id="userType" name="type" value="User" checked="checked" onchange="toggleFields()" /> <label for="userType">User</label>
+                <input type="radio" id="hospitalType" name="type" value="Hospital" onchange="toggleFields()" /> <label for="hospitalType">Hospital</label>
+            </p> -->
+        </div>
+
+        <!-- User Fields -->
+        <div class="user-fields" id="userFields">
+            <p><label for="username">Username</label><input type="text" id="username" name="username" required="true"/></p>
+            <p><label for="user_id">User ID</label><input type="text" id="user_id" name="user_id" required="true"/></p>
+            <p><label for="address">Address</label><textarea id="address" name="user_address" required="true"></textarea></p>
+            <p><label for="date_of_birth">Date of Birth</label><input type="date" id="date_of_birth" name="date_of_birth" required="true"/></p>
+            <p class="radio-group"><label>Gender</label>
+                <input type="radio" id="male" name="gender" value="male" required="true"/><label for="male">Male</label>
+                <input type="radio" id="female" name="gender" value="female"/><label for="female">Female</label>
+                <input type="radio" id="other" name="gender" value="other"/><label for="other">Other</label>
+            </p>
+            <p><label for="password">Password</label><input type="password" id="password" name="password" required="true"/></p>
+            <p><label for="phone_number">Phone Number</label><input type="tel" id="phone_number" name="phone_number" required="true" pattern="[0-9]{10}"/></p>
+            <p><label for="pincode">Pincode</label><input type="text" id="pincode" name="pincode" required="true" pattern="[0-9]{6}"/></p>
+        </div>
+
+        <!-- Hospital Fields -->
+        <div class="hospital-fields" id="hospitalFields">
+            <p><label for="hospital_type">Hospital Type</label>
+                <select id="hospital_type" name="hospital_type" required="true">
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                    <option value="Specialty">Specialty</option>
+                </select>
+            </p>
+            <p><label for="registration_number">Registration Number</label><input type="text" id="registration_number" name="registration_number" required="true"/></p>
+            <p><label for="hospital_address">Address</label><textarea id="hospital_address" name="hospital_address" required="true"></textarea></p>
+            <p><label for="hospital_pincode">Pincode</label><input type="text" id="hospital_pincode" name="hospital_pincode" required="true" pattern="[0-9]{6}"/></p>
+            <p><label for="hospital_name">Hospital Name</label><input type="text" id="hospital_name" name="hospital_name" required="true"/></p>
+            <p><label for="hospital_id">Hospital ID</label><input type="text" id="hospital_id" name="hospital_id" required="true"/></p>
+            <p><label for="hospital_password">Password</label><input type="password" id="hospital_password" name="hospital_password" required="true"/></p>
+            <p><label for="contact_information">Contact Information</label><input type="tel" id="contact_information" name="contact_information" required="true" pattern="[0-9]{10}"/></p>
+        </div>
+
+        <p><input type="submit" value="Register"/></p>
+		<p class="login-link"><a href="x_1234_lifesync_login.do">Already Registered? Login</a></p>
+    </form>
+</j:jelly>]]></html>
+        <name>register</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-28 07:37:48</sys_created_on>
+        <sys_id>c335e8309f4022107f44ebd9ab24ab09</sys_id>
+        <sys_mod_count>58</sys_mod_count>
+        <sys_name>register</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ui_page_c335e8309f4022107f44ebd9ab24ab09</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-14 11:30:37</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>c335e8309f4022107f44ebd9ab24ab09</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-28 07:37:47</sys_created_on>
+        <sys_id>30776cf09f4022107f44ebd9ab24aba7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-28 07:37:47</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

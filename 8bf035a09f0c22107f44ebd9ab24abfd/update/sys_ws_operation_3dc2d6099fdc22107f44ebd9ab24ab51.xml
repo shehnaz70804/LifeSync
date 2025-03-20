@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>POST</http_method>
+        <name>RegisterHospital</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    try {
+        var body = request.body.data;
+        gs.info('RegisterHospitalAPI: Received data - ' + JSON.stringify(body));
+
+        var gr = new GlideRecord('x_1234_lifesync_hospital_register');
+        gr.initialize();
+        gr.setValue('hospital_name', body.hospital_name);
+        gr.setValue('hospital_id', body.hospital_id);
+        gr.setValue('address', body.address);
+        gr.setValue('pincode', body.pincode);
+        gr.setValue('hospital_type', body.hospital_type);
+        gr.setValue('registration_number', body.registration_number);
+        gr.setValue('password', body.password);
+        gr.setValue('contact_information', body.contact_information);
+        gr.setValue('type', body.type || 'Hospital');
+        var recordId = gr.insert();
+
+        gs.info('RegisterHospitalAPI: Record inserted - ID: ' + recordId);
+        response.setStatus(201);
+        return { success: true, recordId: recordId }; // Flattened response
+    } catch (e) {
+        gs.error('RegisterHospitalAPI: Error - ' + e.message);
+        response.setStatus(500);
+        return { error: e.message };
+    }
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1234_lifesync/registerhospitalapi/register</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/register</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-13 20:25:23</sys_created_on>
+        <sys_id>3dc2d6099fdc22107f44ebd9ab24ab51</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>RegisterHospital</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ws_operation_3dc2d6099fdc22107f44ebd9ab24ab51</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-13 20:25:23</sys_updated_on>
+        <web_service_definition display_value="RegisterHospitalAPI">a8925ac59fdc22107f44ebd9ab24ab3e</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>3dc2d6099fdc22107f44ebd9ab24ab51</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-13 20:25:22</sys_created_on>
+        <sys_id>6bc39e499fdc22107f44ebd9ab24ab9c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-13 20:25:22</sys_updated_on>
+        <table>sys_ws_operation</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

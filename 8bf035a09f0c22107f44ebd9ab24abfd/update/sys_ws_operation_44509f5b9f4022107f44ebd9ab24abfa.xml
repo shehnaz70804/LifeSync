@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>POST</http_method>
+        <name>CreateRecord</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+    try {
+        var userId = request.body.data.user_id;
+        if (!userId) {
+            throw new Error('User ID not provided');
+        }
+
+        var recordGr = new GlideRecord('x_1234_lifesync_lifesync_records');
+        recordGr.initialize();
+        recordGr.setValue('Userid', userId);
+        var recordId = recordGr.insert();
+
+        gs.info('CreateRecordAPI: Record inserted - ID: ' + recordId);
+        response.setStatus(201);
+        return { success: true, recordId: recordId };
+    } catch (e) {
+        gs.error('CreateRecordAPI: Error - ' + e.message);
+        response.setStatus(500);
+        return { error: e.message };
+    }
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_1234_lifesync/create_record</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <requires_snc_internal_role>true</requires_snc_internal_role>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-08 14:20:51</sys_created_on>
+        <sys_id>44509f5b9f4022107f44ebd9ab24abfa</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>CreateRecord</sys_name>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_ws_operation_44509f5b9f4022107f44ebd9ab24abfa</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-08 14:20:51</sys_updated_on>
+        <web_service_definition display_value="CreateRecordAPI">6d10df9b9f4022107f44ebd9ab24ab3c</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>44509f5b9f4022107f44ebd9ab24abfa</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-03-08 14:20:51</sys_created_on>
+        <sys_id>b66057db9f4022107f44ebd9ab24abf3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-03-08 14:20:51</sys_updated_on>
+        <table>sys_ws_operation</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

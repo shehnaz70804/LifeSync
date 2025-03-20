@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_sg_navigation_tab_map">
+    <sys_sg_navigation_tab_map action="INSERT_OR_UPDATE">
+        <navigation display_value="Mobile Agent">679d4f0653d033002d96ddeeff7b1279</navigation>
+        <navigation_tab display_value="LifeSync">fad275249f0c22107f44ebd9ab24abba</navigation_tab>
+        <order>160</order>
+        <sys_class_name>sys_sg_navigation_tab_map</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-02-27 18:28:48</sys_created_on>
+        <sys_id>43d239249f0c22107f44ebd9ab24ab04</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="LifeSync" source="x_1234_lifesync">8bf035a09f0c22107f44ebd9ab24abfd</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="LifeSync">8bf035a09f0c22107f44ebd9ab24abfd</sys_scope>
+        <sys_update_name>sys_sg_navigation_tab_map_43d239249f0c22107f44ebd9ab24ab04</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-02-27 18:28:48</sys_updated_on>
+    </sys_sg_navigation_tab_map>
+</record_update>
